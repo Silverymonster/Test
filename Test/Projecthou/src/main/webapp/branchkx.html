@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<link rel="stylesheet" type="text/css" href="http://unpkg.com/element-ui@2.4.8/lib/theme-chalk/index.css">
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+
+<link rel="stylesheet" href="layui/css/layui.css" media="all">
+<script src="layui/layui.js" charset="utf-8" type="text/javascript"></script>
+<link rel="stylesheet" href="css/branchkx.css">
+<!-- 地图 -->
+<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=mK55PnxMQ79ff5TAzWNdvQufGSTiy5n1&services=&t=20171014112628">
+</script>
+<!-- <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script> -->
+<script type="text/javascript" src="js/q.js"></script>
+<script type="text/javascript">
+$(function () {
+	function getUrlParam(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg); //匹配目标参数
+		if (r != null)
+			return unescape(r[2]);
+			return null; //返回参数值
+	}
+	var jiao=getUrlParam("shopid");
+	let jiao1=getUrlParam("uid");
+	 $.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/lbselectpic?shopid="+jiao,
+		type:"post",
+		async:false,
+		datatype:"jsonp",
+		jsonp:"callback",
+		cintebtType:"application/x-www-form-urlencoded;charset=UTF-8",
+		success:function(data){
+			var jw = JSON.parse(data);
+			for(var i =0;i<jw.length;i++){
+				$($(".i1").find("img")[i]).attr("src",jw[i].picture);
+				$($(".i1").find("img")[i+1]).attr("src",jw[i+1].picture);
+				$($(".i1").find("img")[i+2]).attr("src",jw[i+2].picture);
+			}
+		},error:function(data){//错误，返回回来的错误数据
+			alert("失败");
+		}
+	})
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/lbselectshopinfo?shopid="+jiao,
+		type:"post",
+		async:false,
+		datatype:"jsonp",
+		jsonp:"callback",
+		cintebtType:"application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+			var jw = JSON.parse(data);
+			for(let i =0;jw.length;i++){
+				$($(".mm").find("img")).attr("src",jw[i].shoppicture);
+				$($(".xz").find("p")[i+1]).html(jw[i].shopname);
+				$($(".xz").find("p")[i+3]).html(jw[i].shopspace);
+				$($(".xz").find("p")[i+5]).html(jw[i].telephone);
+				$($(".xz").find("p")[i+7]).html(jw[i].shophours);
+				$($(".xz").find("p")[i+9]).html(jw[i].shoparea);
+			}
+		},error:function(data){
+			alert("查询店铺信息错误");
+		}
+	})
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/lbselectshopcoach?shopid="+jiao,
+		type:"post",
+		async:false,
+		datatype:"jsonp",
+		jsonp:"callback",
+		cintebtType:"application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+			var jw = JSON.parse(data);
+				$($(".jiaolian1").find("img")[0]).attr("src",jw[0].userpicture);
+				$($(".jiaolian1").find("p")[0]).html(jw[0].username);
+				$($(".jiaolian1").find("p")[1]).html(jw[0].age);
+				$($(".jiaolian1").find("p")[3]).html(jw[0].remarks);
+				$($(".jiaolian1").find("a")[0]).attr("href","coach1.html?userid="+jw[0].userid);
+				
+				$($(".jiaolian2").find("img")[0]).attr("src",jw[1].userpicture);
+				$($(".jiaolian2").find("p")[0]).html(jw[1].username);
+				$($(".jiaolian2").find("p")[1]).html(jw[1].age);
+				$($(".jiaolian2").find("p")[3]).html(jw[1].remarks);
+				$($(".jiaolian2").find("a")[0]).attr("href","coach1.html?userid="+jw[1].userid);
+				
+				$($(".jiaolian3").find("img")[0]).attr("src",jw[2].userpicture);
+				$($(".jiaolian3").find("p")[0]).html(jw[2].username);
+				$($(".jiaolian3").find("p")[1]).html(jw[2].age);
+				$($(".jiaolian3").find("p")[3]).html(jw[2].remarks);
+				$($(".jiaolian3").find("a")[0]).attr("href","coach1.html?userid="+jw[2].userid);
+				
+				$($(".jiaolian4").find("img")[0]).attr("src",jw[3].userpicture);
+				$($(".jiaolian4").find("p")[0]).html(jw[3].username);
+				$($(".jiaolian4").find("p")[1]).html(jw[3].age);
+				$($(".jiaolian4").find("p")[3]).html(jw[3].remarks);
+				$($(".jiaolian4").find("a")[0]).attr("href","coach1.html?userid="+jw[3].userid);
+				
+				$($(".jiaolian5").find("img")[0]).attr("src",jw[4].userpicture);
+				$($(".jiaolian5").find("p")[0]).html(jw[4].username);
+				$($(".jiaolian5").find("p")[1]).html(jw[4].age);
+				$($(".jiaolian5").find("p")[3]).html(jw[4].remarks);
+				$($(".jiaolian5").find("a")[0]).attr("href","coach1.html?userid="+jw[4].userid);
+				
+				$($(".jiaolian6").find("img")[0]).attr("src",jw[5].userpicture);
+				$($(".jiaolian6").find("p")[0]).html(jw[5].username);
+				$($(".jiaolian6").find("p")[1]).html(jw[5].age);
+				$($(".jiaolian6").find("p")[3]).html(jw[5].remarks);
+				$($(".jiaolian6").find("a")[0]).attr("href","coach1.html?userid="+jw[5].userid);
+		},error:function(data){//错误，返回回来的错误数据
+			alert("失败");
+		}
+	})
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/lbselectshopequipment?shopid="+jiao,
+		type:"post",
+		async:false,
+		datatype:"jsonp",
+		jsonp:"callback",
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+			var jw = JSON.parse(data);
+				$($(".qc1").find("img")[0]).attr("src",jw[0].equipmentpicture);
+				$($(".qc11").find("p")[0]).html(jw[0].equipmentname);
+				$($(".qc11").find("p")[1]).html(jw[0].equipmentcontent);
+
+				$($(".qc2").find("img")[0]).attr("src",jw[1].equipmentpicture);
+				$($(".qc11").find("p")[2]).html(jw[1].equipmentname);
+				$($(".qc11").find("p")[3]).html(jw[1].equipmentcontent);
+				
+				$($(".qc2").find("img")[1]).attr("src",jw[2].equipmentpicture);
+				$($(".qc11").find("p")[6]).html(jw[2].equipmentname);
+				$($(".qc11").find("p")[7]).html(jw[2].equipmentcontent);
+				
+				$($(".qc3").find("img")[0]).attr("src",jw[3].equipmentpicture);
+				$($(".qc11").find("p")[4]).html(jw[3].equipmentname);
+				$($(".qc11").find("p")[5]).html(jw[3].equipmentcontent);
+		},error:function(data){
+			alert("失败");
+		}
+	})
+})
+
+</script>
+
+</head>
+
+<body class="body">
+	<iframe src="dingtou.jsp" style="display:block;width:1520px;height:185px;z-index:5000;position:fixed;top:0;border:0px;"></iframe>
+	<!-- 图片轮播 -->
+	<div id="divbody">
+		<!-- 图片轮播 -->
+		<div class="layui-carousel" id="test10">
+			<div carousel-item="" style="height:100%;">
+				<div >
+					<a class="i1" href="#"><img src="" class="lunbo"
+						style="width: 100%; height: 100%;"></a>
+				</div>
+				<div>
+					<a class="i1" href="#"><img src="" class="lunbo"
+						style="width: 100%; height: 100%;"></a>
+				</div>
+				<div>
+					<a class="i1" href="#"><img src="" class="lunbo"
+						style="width: 100%; height: 100%;"></a>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div id="div0" style="border:1px solid;"></div>
+		</div>
+	</div>
+	<!-- 门店信息 -->
+	<div class="mdxz">
+		<div class="mm">
+			<img style="height:450px;width:720px;" src="">
+		</div>
+		<div class="xz">
+			<div class="xz1">
+				<p class="pxz">店铺名称:</p>
+				<p class="pxz"></p>
+			</div>
+			<div class="xz1">
+				<p class="pxz">位置:</p>
+				<p class="pxz"></p>
+			</div>
+			<div class="xz1">
+				<p class="pxz">电话:</p>
+				<p class="pxz"></p>
+			</div>
+			<div class="xz1">
+				<p class="pxz">营业时间:</p>
+				<p class="pxz"></p>
+			</div>
+			<div class="xz1">
+				<p class="pxz">店铺面积:</p>
+				<p class="pxz"></p>
+			</div>
+			<div class="xz1">
+				<a class="a1" href="#ditu">查看路线>></a>
+			</div>
+		</div>
+	</div>
+	<!-- 教练 -->
+	<div class="jiaolian">
+		<div style="margin-left:620px;margin-top:40px;float: left;">
+			<a href="#" style="font-size:30px;font-weight:bold;color:black;">教&nbsp;练</a>
+			<hr style="width:65px;height:2px;background-color:Gold;" >
+		</div>
+		<div class="jiaolian1" onmouseout="zhe1_none(1)" onmouseover="zhe1_block(1)">
+			<img src="">
+			<div id="zhezhao1" style="float: left;">
+			<a>
+				<p class="pl"></p>
+				<p class="pl"></p>
+				<p class="pl">国家一级健身运动员</p>
+				<p class="pl1"></p>
+			</a>
+			</div>
+		</div>
+		<div class="jiaolian2" onmouseout="zhe1_none(2)" onmouseover="zhe1_block(2)">
+			<img src="">
+			<div id="zhezhao2" style="float:left;">
+			<a>
+				<p class="pl"></p>
+				<p class="pl"></p>
+				<p class="pl">AFAI国际私教</p>
+				<p class="pl1"></p>
+			</a>
+			</div>
+		</div>
+		<div class="jiaolian3" onmouseout="zhe1_none(3)" onmouseover="zhe1_block(3)">
+			<img src="">			
+			<div id="zhezhao3" style="float: left;">
+			<a>
+				<p class="pl"></p>
+				<p class="pl"></p>
+				<p class="pl">泰拳认证教练</p>
+				<p class="pl1"></p>
+				</a>
+			</div>
+		</div>
+		<div class="jiaolian4" onmouseout="zhe1_none(4)" onmouseover="zhe1_block(4)">
+		<img src="">
+			<div id="zhezhao4" style="float: left;">
+			<a>
+				<p class="pl"></p>
+				<p class="pl"></p>
+				<p class="pl">私人教练</p>
+				<p class="pl1"></p>
+				</a>
+			</div>
+		</div>
+		<div class="jiaolian5" onmouseout="zhe1_none(5)" onmouseover="zhe1_block(5)">
+		<img src="">
+			<div id="zhezhao5" style="float: left;">
+			<a>
+				<p class="pl"></p>
+				<p class="pl"></p>
+				<p class="pl">精英私人教练</p>
+				<p class="pl1"></p>
+				</a>
+			</div>
+		</div>
+		<div class="jiaolian6" id="jiaolian6" onmouseout="zhe1_none(6)" onmouseover="zhe1_block(6)">
+		<img src="">
+		<div id="zhezhao6" style="float: left;">
+			<a>
+				<p class="pl"></p>
+				<p class="pl"></p>
+				<p class="pl">中国五星级认证好教练</p>
+				<p class="pl1"></p>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="qicai">
+		<div style="width:200px;height:40px;margin-left:620px;">
+			<a href="#" style="font-size:25px;font-weight:bold;color:black;">器材&nbsp;简介</a>
+			<hr style="width:95px;height:2px;background-color:Gold;" >
+		</div>
+		<div class="qc1">
+			<img src="" class="ig1">
+			<div class="qc11">
+				<p class="qcxx"></p>
+				<p class="qcjj"></p>
+			</div>
+		</div>
+		<div class="qc2">
+			<img src="" class="ig1">
+			<div class="qc11">
+				<p class="qcxx"></p>
+				<p class="qcjj"></p>
+			</div>
+		</div>
+		<div class="qc2">
+			<img src="" class="ig1">
+			<div class="qc11">
+				<p class="qcxx"></p>
+				<p class="qcjj"></p>
+			</div>
+		</div>
+		<div class="qc3">
+			<img src="" class="ig1">
+			<div class="qc11">
+				<p class="qcxx"></p>
+				<p class="qcjj"></p>
+			</div>
+		</div>
+	</div>
+	<!-- 地图以及公司资料 -->
+	<div class="ditu" id="ditu">
+		<div class="ditu1">
+			<div id="allmap" style="width:850px;height:450px;border-radius:10px;"></div>
+		</div>
+		<div class="dpxz">
+			<a href="index.jsp" style="margin-top:5px;font-size:30px;font-family:'华文楷体';">到达这里</a>
+			<div style="width:540px; height:430px;">
+				<div style="width:540px; height:100px;margin-top:5px;">
+					<div id="r-result">
+						<input type="text" id="startId" name="startId" size="20" placeholder="起始位置" /><br>
+						<input type="text" id="destinationId" name="destinationId" size="20" placeholder="目的地位置" /><br>
+						<input type="button" id="result" value="查询" />
+					</div>
+					<div id="resultstep" class="resultstep"></div>
+					<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto;display:none;"></div>
+				</div>
+				</br>
+				<div id="fade" class="black_overlay"></div>
+			</div>
+		</div>
+	</div>
+	<!-- 底部 -->
+	<iframe src="dibu.html" style="display:block;width:1520px;height:411px;border:0px solid;"></iframe>
+</body>
+<!-- 轮播 -->
+<script type="text/javascript">
+layui.use([ 'carousel', 'form' ], function() {
+	var carousel = layui.carousel, form = layui.form;
+	//图片轮播
+	carousel.render({
+		elem : '#test10',
+		width : '100%',
+		height : '627px',
+		interval : 5000
+	});
+	//其它示例
+	$('.demoTest .layui-btn').on('click', function() {
+		var othis = $(this), type = othis.data('type');
+		active[type] ? active[type].call(this, othis) : '';
+	});
+});
+</script>
+<!-- 地图 -->
+<script type="text/javascript">
+	//我所在位置119.98186101,31.77139674
+	// 百度地图API功能
+	var map = new BMap.Map("allmap"); // 创建Map实例
+	map.centerAndZoom(new BMap.Point(113.807778,34.800157), 17); // 初始化地图,设置中心点坐标和地图级别
+	map.addControl(new BMap.MapTypeControl()); //添加地图类型控件
+	map.setCurrentCity("郑州市"); // 设置地图显示的城市 此项是必须设置的
+	map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+
+	function G(id) {
+		return document.getElementById(id);
+	}
+
+	var ac = new BMap.Autocomplete( //建立一个自动完成的对象
+	{
+		"input" : "startId",
+		"location" : map
+	});
+
+	var bc = new BMap.Autocomplete( //建立一个自动完成的对象
+	{
+		"input" : "destinationId",
+		"location" : map
+	});
+
+	ac.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
+		var str = "";
+		var _value = e.fromitem.value;
+		var value = "";
+		if (e.fromitem.index > -1) {
+			value = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+		}
+		str = "FromItem<br />index = " + e.fromitem.index + "<br />value = "
+				+ value;
+
+		value = "";
+		if (e.toitem.index > -1) {
+			_value = e.toitem.value;
+			value = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+		}
+		str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = "
+				+ value;
+		G("searchResultPanel").innerHTML = str;
+	});
+
+	bc.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
+		var str = "";
+		var _value = e.fromitem.value;
+		var value = "";
+		if (e.fromitem.index > -1) {
+			value = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+		}
+		str = "FromItem<br />index = " + e.fromitem.index + "<br />value = "
+				+ value;
+
+		value = "";
+		if (e.toitem.index > -1) {
+			_value = e.toitem.value;
+			value = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+		}
+		str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = "
+				+ value;
+		G("searchResultPanel").innerHTML = str;
+	});
+
+	var myValue;
+	ac.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+		var _value = e.item.value;
+		myValue = _value.province + _value.city + _value.district
+				+ _value.street + _value.business;
+		G("searchResultPanel").innerHTML = "onconfirm<br />index = "
+				+ e.item.index + "<br />myValue = " + myValue;
+
+		setPlace();
+	});
+
+	var myValue;
+	bc.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+		var _value = e.item.value;
+		myValue = _value.province + _value.city + _value.district
+				+ _value.street + _value.business;
+		G("searchResultPanel").innerHTML = "onconfirm<br />index = "
+				+ e.item.index + "<br />myValue = " + myValue;
+
+		setPlace();
+	});
+
+	function setPlace() {
+		map.clearOverlays(); //清除地图上所有覆盖物
+		function myFun() {
+			var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+			map.centerAndZoom(pp, 18);
+			map.addOverlay(new BMap.Marker(pp)); //添加标注
+		}
+		var local = new BMap.LocalSearch(map, { //智能搜索
+			onSearchComplete : myFun
+		});
+		local.search(myValue);
+	}
+
+	//三种驾车策略：最少时间，最短距离，避开高速
+	var routePolicy = [ BMAP_DRIVING_POLICY_LEAST_TIME,
+			BMAP_DRIVING_POLICY_LEAST_DISTANCE,
+			BMAP_DRIVING_POLICY_AVOID_HIGHWAYS ];
+	$("#result").click(function() {
+		$("#resultstep").css("display", "block");
+		var start = $("#startId").val();
+		var end = $("#destinationId").val();
+		//alert(start+"--"+end);
+		map.clearOverlays();
+		var i = $("#driving_way select").val();
+		search(start, end, routePolicy[i]);
+		function search(start, end, route) {
+			var driving = new BMap.DrivingRoute(map, {renderOptions: {map: map, panel: "resultstep", autoViewport: true}});
+			driving.search(start,end);
+		}
+
+		//驾车计算时间和距离
+		var output = "从" + start + "到" + end + "驾车需要";
+		var searchComplete = function(results) {
+			if (transit.getStatus() != BMAP_STATUS_SUCCESS) {
+				return;
+			}
+			var plan = results.getPlan(0);
+			output += plan.getDuration(true) + "\n"; //获取时间
+			output += "总路程为：";
+			output += plan.getDistance(true) + "\n"; //获取距离
+		}
+		var transit = new BMap.DrivingRoute(map, {
+			renderOptions : {
+				map : map
+			},
+			onSearchComplete : searchComplete,
+			onPolylinesSet : function() {
+				setTimeout(function() {
+
+				}, "1000");
+				//$("#resultCount").html(output);
+			}
+		});
+		transit.search(start, end);
+
+		//驾车步骤
+		var transit = new BMap.DrivingRoute(map, {
+			renderOptions : {
+				map : map,
+				panel : "",
+				enableDragging : true
+			//起终点可进行拖拽
+			},
+		});
+		transit.search(start, end);
+	});
+
+	//比例尺控件
+	var top_left_control = new BMap.ScaleControl({
+		anchor : BMAP_ANCHOR_TOP_LEFT
+	});// 左上角，添加比例尺
+	var top_left_navigation = new BMap.NavigationControl(); //左上角，添加默认缩放平移控件
+	var top_right_navigation = new BMap.NavigationControl({
+		anchor : BMAP_ANCHOR_TOP_RIGHT,
+		type : BMAP_NAVIGATION_CONTROL_SMALL
+	}); //右上角，仅包含平移和缩放按钮
+	/*缩放控件type有四种类型:
+	BMAP_NAVIGATION_CONTROL_SMALL：仅包含平移和缩放按钮；BMAP_NAVIGATION_CONTROL_PAN:仅包含平移按钮；BMAP_NAVIGATION_CONTROL_ZOOM：仅包含缩放按钮*/
+	//默认加载地图add比例尺控件
+	map.addControl(top_left_control);
+	map.addControl(top_left_navigation);
+	map.addControl(top_right_navigation);
+</script>
+</html>

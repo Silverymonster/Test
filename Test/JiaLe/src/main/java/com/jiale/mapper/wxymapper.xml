@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wxy.jiale.mapper" >
+	<!-- 查询分店一的图片 根据店铺查 -->   
+	<select id="wxyselectpic" parameterType="map" resultType="map">
+		SELECT * FROM pictureinfo 
+	    WHERE shopid=#{shopid}
+	</select>
+   <!-- 查询店铺一下的教练 -->
+	<select id="wxyselectshop" parameterType="map" resultType="map" >
+		SELECT u2.* FROM shop
+		JOIN shoprole ON shoprole.`sid`=shop.`sid`
+		JOIN userinfo u1 ON shoprole.`userid`=u1.`userid`
+		JOIN userinfo u2 ON u2.uid=u1.`userid`
+		WHERE shop.`shopid`=#{shopid}
+    </select>
+   <!-- 查询店铺一教练下的用户 -->
+   <select id="wxyselectuser" parameterType="map" resultType="map" >
+		SELECT u2.* FROM userinfo u1
+		JOIN userinfo u2 ON u1.`userid`=u2.`uid`
+		WHERE u2.`userid`=#{userid}
+   </select>
+   <!-- 查询店铺一教练下用户的评论 -->
+   <select id="wxyselectcomments" parameterType="map" resultType="map" >
+       SELECT u2.*,c.* FROM userinfo u1
+   	   JOIN userinfo u2 ON u1.`userid`=u2.`uid`
+       JOIN comments c ON c.userid=u2.`userid`
+       WHERE u1.`userid`=#{userid}
+   </select>
+   
+   <!-- 查询分店二的图片 根据店铺查 -->   
+   <select id="wxyselectpictwo" parameterType="map" resultType="map" >
+     	SELECT * FROM pictureinfo 
+	    WHERE shopid=#{shopid}
+   </select>
+   <!-- 查询店铺二下的器材 -->
+   <select id="wxyselectequipmenttwo" parameterType="map" resultType="map" >
+      SELECT * FROM equipment 
+      WHERE equipmentid &gt;= 5 AND equipmentid &lt;= 8;
+   </select>
+   
+   <!-- 添加店铺信息  -->
+   <insert id="jminsertshop" parameterType="map">
+   		INSERT INTO shop(shoppicture,shopname,shopspace,sid,telephone,shophours,shoparea,template,email) 
+   		VALUES(#{shoppicture},#{shopname},#{shopspace},#{sid},#{telephone},#{shophours},#{shoparea},#{template},#{email})
+   </insert>
+   
+   <!-- 添加店铺与用户中间表 -->
+   <insert id="jminsertshoprole" parameterType="map">
+   		INSERT INTO shoprole(sid,userid) VALUES (#{sid},#{userid})
+   </insert>
+   
+   <!-- 根据用户名查询用户id -->
+   <select id="jmselectuserid" parameterType="map" resultType="map" >
+      	SELECT userinfo.userid FROM userinfo WHERE username=#{username}
+   </select>
+   
+   <!-- 更新用户与角色中间表 -->
+   <update id="jmupdateuserrole" parameterType="map">
+		UPDATE userrole SET roleid =#{roleid} WHERE userid = #{userid} 
+   </update>
+   
+ </mapper> 

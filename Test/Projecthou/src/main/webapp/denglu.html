@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>嘉乐俱乐部用户登录/注册</title>
+<link rel="stylesheet" type="text/css" href="css/zhuce.css">
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+</head>
+<script type="text/javascript">
+$(function (){
+	$("#yh1").click(function () {		
+		$("#yh1").css("background-color",'white');
+		$("#yh2").css("background-color",'PowderBlue');
+		$(".zc").hide();
+		$(".dl").show();
+	})
+	$("#yh2").click(function () {
+		$("#yh1").css("background-color",'PowderBlue');
+		$("#yh2").css("background-color",'white');
+		$(".dl").hide();
+		$(".zc").show();
+	})
+})
+$(function(){
+	 $("#dl").click(function(){
+		 $.ajax({
+			 	url:"http://172.20.10.11:8088/JiaLe/lblogin",
+				type:"post",
+				async:false,
+				data:$("#form").serialize(),
+				contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+				datatype:"jsonp",
+				jsonp:"callback",
+				async:false,
+				success:function(data){
+					var obj = eval("("+data+")");
+					if(obj!=null){
+						alert("登陆成功");
+						$(location).attr('href',"setsession?username="+$("#username").val());
+					}else{
+						alert("登陆失败,请重新登陆");
+						window.location.href = 'denglu.html';
+					}
+				},error:function(data){//错误，返回回来的错误数据
+					alert("登陆失败");
+					$(location).attr('href',"setsession?username="+$("#username").val());
+				}
+		 });
+	})
+})
+$(function(){
+	$("#zc").click(function(){
+		$.ajax({
+			url:"http://172.20.10.11:8088/JiaLe/lbinsertuser",
+			type:"post",
+			data:$("#form1").serialize(),
+			contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+			async:false,
+			datatype:"jsonp",
+			jsonp:"callback",
+			success:function(data){
+				var obj = eval("("+data+")");
+				if(obj!=null){
+					alert("注册成功");
+					window.location.href ='denglu.html';
+				}else{
+					
+				}
+			},error:function(data){//错误，返回回来的错误数据
+				alert("注册失败");
+			}
+		});
+	})
+	$("#yz").click(function(){
+		$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/send",
+		type:"post",
+		async:false,
+		datatype:"jsonp",
+		jsonp:"callback",
+		data:$("#form1").serialize(),
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+		},error:function(data){//错误，返回回来的错误数据
+		}
+	});
+  })
+})
+</script>
+<body class="body" style="background:url('img/bg1.jpg');">
+	<iframe src="dingtou.jsp" style="display:block;width:1520px;z-index:5000;position:fixed;top:0;height:182px;border: 0px"></iframe>
+	<div class="wai" style="background-image:img/zc.png">
+		<table class="li1" cellspacing="0px">
+			<tr>
+				<td style="width:1;background-color:white;color:black;border-radius:20px 0px 0px 0px;" id="yh1">
+					用户登陆
+				</td>
+				<td style="width:1;background-color:PowderBlue;color:black;border-radius:0px 20px 0px 0px;" id="yh2">
+					用户注册
+				</td>
+			</tr>
+		</table>
+		<div class="dl">
+			<div class="dl1" >
+			  <form id="form">
+				<table style="width:350px;height:270px;margin-top:10px;margin-left:70px;">
+					<tr>
+						<td colspan="2"><img style="width:60px;height:60px;border-radius:20px;" src="img/jl.jpg"></td>
+					</tr>
+					<tr>
+						<td colspan="2">用户名:<input type="text" name="username" id="username"/></td>
+					</tr>
+					<tr>
+						<td colspan="2">密码:<input type="password" id="password" name="encryption" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="button" class="but1" style="background-color:CornflowerBlue;" value="登录" id="dl" >
+						<input  type="reset" value="重置" style="background-color:CornflowerBlue;" /></td>
+					</tr>
+				</table>
+			  </form>
+			</div>
+		</div>
+  	<div class="zc" >
+  		<form id="form1">
+			<table class="zc1">
+				<tr>
+					<td colspan="2"><img style="width:60px;height:60px;border-radius:20px;" src="img/jl.jpg"></td>
+				</tr>
+				<tr>
+					<td colspan="2">用户名:<input type="text" name="username" id="username"/></td>
+				</tr>
+				<tr>
+					<td colspan="2">密码:<input type="password" name="password" id="password" /></td>
+				</tr>
+				<tr>
+					<td colspan="2">性别:
+					<input type="radio" style="width:45px;height:20px;" name="sex" value="男" checked="checked" />男
+					<input type="radio" style="width:45px;height:20px;" name="sex" value="女"/>女</td>
+				</tr>
+				<tr>
+					<td colspan="2">手机号:<input type="text" name="phone" id="phone"/></td>
+				</tr>
+				<tr>
+					<td colspan="1"><input type="text" style="width:170px;height:30px;border-radius:20px;" id="code" name="code"/>
+					<input type="button" style="width:100px;height:40px;background-color:CornflowerBlue;border-radius:20px;" id="yz" value="获取验证码" /></td>
+				</tr>
+				
+				<tr>
+					<td colspan="2"><input type="button" class="but1" style="background-color:CornflowerBlue;" value="用户注册" id="zc" >
+					<input type="reset" value="重置" style="background-color:CornflowerBlue;" /></td>
+				</tr>
+			</table>
+		</form>
+  	</div>
+</div>
+</body>
+</html>

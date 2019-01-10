@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/upload.js"></script>
+<link rel="stylesheet" type="text/css" href="css/userinfo.css" /> 
+<script type="text/javascript" src="sui-build/.package/js/sui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="sui-build/.package/css/sui.min.css" /> 
+<link rel="stylesheet" type="text/css" href="sui-build/.package/css/sui-append.min.css" /> 
+</head>
+<body background="img/timg.jpg">
+<div style="height: 61px;">
+<iframe src="dingtou.jsp" style="display:block;width:100%;z-index:100;position:fixed;top:0;border: 0px"></iframe>
+</div>
+<div id="user" style="margin-top: 5%">
+    <div id="button">
+    <a href="javascript:void(0);" class="sui-btn btn-xlarge btn-primary"  id="show">修改个人信息</a><br/>
+    <a href="javascript:void(0);" class="sui-btn btn-xlarge btn-success"  id="hide">上传修改头像</a>
+    </div>
+		  <div id="use1">
+			<form class="sui-form form-horizontal" id="form1" action="userupdate"  method="post">
+			    <input id="userid" type="hidden" class="input-info" value="" name="userid">
+			  <div class="control-group" style="margin-top: 50px;">
+				  <label class="control-label">手机号：</label>
+				  <div class="controls">
+				  <input id="phone1" type="text" class="input-info" value="">
+				  </div>
+			  </div>
+			  <div class="control-group">
+			    <label class="control-label">性别：</label>
+			    <div class="controls">
+			      <label data-toggle="radio" id="sex" class="radio-pretty inline">
+			        <input type="radio" name="sex" value="男"><span>男</span>
+			      </label>
+			      <label data-toggle="radio" id="sex" class="radio-pretty inline">
+			        <input type="radio" name="sex" value="女"><span>女</span>
+			      </label>
+			    </div>
+			  </div>
+			   <div class="control-group">
+				  <label class="control-label">身高：</label>
+				  <span class="sui-dropdown dropdown-bordered select"><span class="dropdown-inner"><a id="drop12" role="button" data-toggle="dropdown" href="#" class="dropdown-toggle">
+			         <input id="height" value="170" name="height" type="hidden"><i class="caret"></i><span>170</span>厘米</a>
+			        <ul id="menu12" role="menu" aria-labelledby="drop12" class="sui-dropdown-menu">
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="155">155</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="156">156</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="157">157</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="158">158</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="159">159</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="160">160</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="161">161</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="162">162</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="163">163</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="164">164</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="165">165</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="166">166</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="167">167</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="168">168</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="169">169</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="170">170</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="171">171</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="172">172</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="173">173</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="174">174</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="175">175</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="176">176</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="177">177</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="178">178</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="179">179</a></li>
+			         <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0);" value="180">180</a></li>
+			       </ul></span></span>
+			   </div>
+			   <div class="control-group">
+				  <label class="control-label">体重：</label>
+				  <div class="controls">
+				  <input type="number" id="weight" name="weight" style="width: 50px" class="input-success">斤
+				  </div>
+			  </div>
+			  <div class="control-group">
+			    <label class="control-label">希望锻炼：</label>
+			    <div class="controls">
+			      <label data-toggle="checkbox" class="checkbox-pretty inline checked">
+			        <input type="checkbox" checked="checked"><span>腹部</span>
+			      </label>
+			      <label data-toggle="checkbox" class="checkbox-pretty inline">
+			        <input type="checkbox"><span>腿部</span>
+			      </label>
+			      <label data-toggle="checkbox" class="checkbox-pretty inline">
+			        <input type="checkbox"><span>背部</span>
+			      </label>
+			      <label data-toggle="checkbox" class="checkbox-pretty inline">
+			        <input type="checkbox"><span>手臂</span>
+			      </label>
+			    </div>
+			  </div>
+			  <div class="control-group">
+			    <label for="date" class="control-label">出生日期：</label>
+			    <div class="controls">
+			      <input type="text" id="birthday" placeholder="你的出生日期" data-rules="required|date" name="birthday" data-toggle="datepicker">
+			    </div>
+			  </div>
+			  <div class="control-group">
+			    <label class="control-label">备注：</label>
+			    <div class="controls">
+			      <textarea rows="3" id="remarks" name="remarks" cols="40" placeholder="写点什么吧！" class="input-block-level"></textarea>
+			    </div>
+			  </div>
+			  <div class="control-group">
+			    <label class="control-label"></label>
+			    <div class="controls">
+			      <button id="update" type="button" class="sui-btn btn-primary">修改</button>
+			      <button type="reset" class="sui-btn">重置</button>
+			    </div>
+			  </div>
+			</form>
+		  </div>
+  
+           
+		  <div id="use2">
+		  <form class="sui-form form-horizontal" id="form2" action="upload"  method="post" enctype="multipart/form-data">
+           <input id="userid2" type="hidden" class="input-info" value="" name="userid">
+           <input id="username2" type="hidden" class="input-info" value="" name="username">
+			  <div style="margin-top: 10%" class="control-group">
+				  <label class="control-label">头像：</label>
+				  <div class="controls">
+					<div class="img-round">
+						<label class="upload-label">
+						<img id="img1" src=""  alt="上传一个头像吧！"/>
+							<input type="file" name="img" id="xdaTanFileImg" onchange="xmTanUploadImg(this,1)" accept="image/*"/>
+						</label>
+					</div>
+				  </div>
+			  </div>
+			  <div class="control-group">
+			     <label class="control-label"></label>
+			       <div class="controls">
+			         <button  id="upload" class="sui-btn btn-success">修改头像</button>
+			       </div>
+			  </div>
+			  </form> 
+		  </div>
+ </div> 
+</body>
+<script>
+$(function(){
+	$("#show").click(function(){
+		$("#use2").hide(1000);
+		$("#use1").show(1000);
+	});
+	$("#hide").click(function(){
+		$("#use1").hide(1000);
+		$("#use2").show(1000);
+	});
+	
+	 function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null)
+				return unescape(r[2]);
+			return null; //返回参数值
+		}
+	var username=decodeURIComponent(getUrlParam("username"));
+	//+getUrlParam("userid")
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/myxselect?username="+username,
+		type:"post",
+		async:false,
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+			var obj=JSON.parse(data);
+			if(obj!=""){
+			      
+					for(let i=0;i<obj.length;i++){
+						$("#userid").attr("value",obj[0].userid);
+						$("#userid2").attr("value",obj[0].userid);
+						$("#username2").attr("value",obj[0].username);
+						$("#phone1").attr("value",obj[0].phone);
+						$("#height").attr("value",obj[0].height);
+                        if(obj[0].sex=="男"){
+                        	$("#sex").attr("class","radio-pretty inline checked");
+                        }
+                        if(obj[0].sex=="女"){
+                        	$("#sex").attr("class","radio-pretty inline checked");
+                        }
+						$("#weight").attr("value",obj[0].weight);
+						$("#birthday").attr("value",obj[0].birthday);
+						$("#remarks").append(obj[0].remarks);
+						if(obj[0].userpicture!=null)
+						{
+						$("#img1").attr("src",obj[0].userpicture);
+						}
+						if(obj[0].userpicture==null||obj[0].userpicture=="")
+						{
+						$("#img1").attr("src","img/touxiang.png");
+						}
+					}
+				}else{
+				
+				}
+		}
+	});	
+	
+	 
+	 $("#update").click(function(){
+			$.ajax({
+				url:"http://172.20.10.11:8088/JiaLe/myxupdateyh",
+				type:"post",
+				async:false,
+				dataType:"text",
+				data:$("#form1").serialize(),
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				success:function(data){
+					var obj = eval("("+data+")");
+					if(obj!="")
+						{
+					    alert("修改成功");
+					    window.location.href ='home.jsp';
+						}
+				},
+				error:function(data){//错误，返回回来的错误数据
+					
+					window.location.href ='home.jsp';
+				}
+			});
+		}); 
+	 
+	 
+	  $("#upload").click(function(){alert("上传头像成功");});
+	 
+})
+</script>
+</html>

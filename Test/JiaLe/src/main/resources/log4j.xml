@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//log4j/log4j Configuration//EN" "log4j.dtd">
+<log4j:configuration>
+	<!-- 日志输出到控制台 <appender name="console" class="org.apache.log4j.ConsoleAppender"> 
+		日志输出格式 <layout class="org.apache.log4j.PatternLayout"> <param name="ConversionPattern" 
+		value="[%p][%d{yyyy-MM-dd HH:mm:ss SSS}][%c]-[%m]%n" /> </layout> 过滤器设置输出的级别 
+		<filter class="org.apache.log4j.varia.LevelRangeFilter"> 设置日志输出的最小级别 <param 
+		name="levelMin" value="DEBUG" /> 设置日志输出的最大级别 <param name="levelMax" value="ERROR" 
+		/> </filter> </appender> -->
+
+	<!-- 输出日志到文件 -->
+	<appender name="fileAppender"
+		class="org.apache.log4j.FileAppender">
+		<!-- 输出文件全路径名 -->
+		<!-- <param name="File" value="D:\Test.log" /> -->
+		<!--是否在已存在的文件追加写：默认时true，若为false则每次启动都会删除并重新新建文件 -->
+		<param name="Append" value="true" />
+		<param name="Threshold" value="info" />
+		<!--是否启用缓存，默认false -->
+		<param name="BufferedIO" value="false" />
+		<!--缓存大小，依赖上一个参数(bufferedIO), 默认缓存大小8K -->
+		<param name="BufferSize" value="512" />
+		<!-- 日志输出格式 -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%p][%d{yyyy-MM-dd HH:mm:ss SSS}][%c]-[%m]%n" />
+		</layout>
+	</appender>
+	<!-- 配置数据库 -->
+	<appender name="operationlog"
+		class="org.apache.log4j.jdbc.JDBCAppender">
+		<param name="Threshold" value="info" />
+		<param name="driver" value="com.mysql.jdbc.Driver" />
+		<param name="URL" value="jdbc:mysql://47.100.164.212:3306/jiale" />
+		<param name="user" value="root" />
+		<param name="password" value="123456" />
+		<param name="sql"
+			value="insert into operationlog(operationusername,operationname,operationtime,operationlog) values ('%X{operationusername}','%X{operationname}','%X{operationtime}','%X{operationlog}')" />
+	</appender>
+
+	<appender name="errorlog"
+		class="org.apache.log4j.jdbc.JDBCAppender">
+		<param name="Threshold" value="error" />
+		<param name="driver" value="com.mysql.jdbc.Driver" />
+		<param name="URL" value="jdbc:mysql://47.100.164.212:3306/jiale" />
+		<param name="user" value="root" />
+		<param name="password" value="123456" />
+		<param name="sql"
+			value="insert into errorlog(errorusername,errorname,errortime,errorlog) values ('%X{errorusername}','%X{errorname}','%X{errortime}','%X{errorlog}')" />
+	</appender>
+
+	<!-- 1. 指定logger的设置，additivity是否遵循缺省的继承机制 2. 当additivity="false"时，root中的配置就失灵了，不遵循缺省的继承机制 
+		3. 代码中使用Logger.getLogger("logTest")获得此输出器，且不会使用根输出器 -->
+	<logger name="logTest" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="dailyRollingAppender" />
+	</logger>
+
+	<!-- 根logger的设置，若代码中未找到指定的logger，则会根据继承机制，使用根logger -->
+
+	<root>
+		<appender-ref ref="fileAppender" />
+		<appender-ref ref="operationlog" />
+		<appender-ref ref="errorlog" />
+	</root>
+</log4j:configuration>

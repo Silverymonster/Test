@@ -1,0 +1,414 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+#body {
+	height:4600px;
+	width:1520px;
+}
+.a1{
+	margin-left:35px;
+	color:white;
+	font-size:18px;
+	text-decoration:none;
+}
+.a1:hover{
+	color:DeepSkyBlue;
+	text-decoration:none;
+}
+header {
+	opacity:0.7;
+	width:1520px;
+	height:61px;
+	background-color:Black;
+	position:absolute;
+	z-index:5000;
+}
+div{
+	
+	float: left;
+}
+.ul1{
+	margin-top:5px;
+	list-style:none;
+	opacity:1.5;
+	float:left;
+}
+.sousuo {
+	float: left;
+	width: 540px;
+	margin-left:80px;
+	margin-top: .8em;
+}
+.sousuo input[type="text"] {
+	outline: none;
+	border: none;
+	background: #EFEFEF;
+	padding: 10px;
+	text-align: center;
+	font-size: 14px;
+	color: #999;
+	width: 50%;
+	float: left;
+	border-top-left-radius: 25px;
+	border-bottom-left-radius: 25px;
+}
+.sousuo input[type="submit"] {
+	outline: none;
+	border: none;
+	background: #212121;
+	padding: 9px 0;
+	font-size: 14px;
+	color: #fff;
+	width: 22%;
+	border-top-right-radius: 30px;
+	border-bottom-right-radius: 30px;
+}
+#divbody {
+	margin: auto;
+	width: 100%;
+	/* height: 150%; */
+	/* border: 1px solid black; */
+}
+
+.tuoguan{
+	width:1510px;
+	height:1150px;
+	margin-top:95px;
+	margin-left:5px;
+	text-align:center;
+}
+.q7{
+	width:200px;
+	height:200px;
+	margin-left:604px;
+	margin-top:400px;
+}
+.q1{
+	width:453px;
+	height:410px;
+	margin-top:-620px;
+	margin-left:750px;
+}
+#q1{
+	float:top;
+	width:50%;
+	height:35%;
+	border-radius:50px;
+	display:none;
+}
+.q2{
+	width:700px;
+	height:240px;
+	margin-left:700px;
+	margin-top:-230px;
+}
+.q3{
+	width:700px;
+	height:240px;
+	margin-left:670px;
+	margin-top:-30px;
+}
+#q3{
+	width:40%;
+	height:52%;
+	margin-top:4%;
+	border-radius:20px;
+	display:none;
+	float:right;
+	margin-right:17%;
+}
+.q4{
+	width:270px;
+	height:320px;
+	margin-left:400px;
+	margin-top:-240px;
+}
+#q4{
+	width:80%;
+	height:50%;
+	border-radius:20px;
+	margin-left:35%;
+	margin-top: 10%;
+	display:none;
+}
+.q5{
+	width:480px;
+	height:240px;
+	float:left;
+	margin-left:-535px;
+	margin-top:-490px;
+}
+#q5{
+	float:left;
+	width:50%;
+	height:65%;
+	margin-top:-85%;
+	border-radius:20px;
+	margin-left:10%;
+	display:none;
+}
+.q6{
+	width:210px;
+	height:250px;
+	margin-left:-150px;
+	margin-top:-637px;
+}
+#q6{
+	float:left;
+	width:110%;
+	height:60%;
+	margin-top:-180%;
+	border-radius:20px;
+	display:none;
+}
+.jiaolian{
+	width:1520px;
+	height:900px;
+	background-color:black;
+	opacity:0.9;
+}
+.jiaolian1{
+	width:350px;
+	height:350px;
+	margin-top:125px;
+	margin-left:-570px;
+	background-color:blue;
+	border-radius:20px;
+	z-index: 3;
+}
+.jiaolian img{
+	width:350px;
+	height:350px;
+	border-radius:20px;
+}
+.jiaolian2{
+	width:350px;
+	height:350px;
+	margin-left:-100px;
+	margin-top:126px;
+	border-radius:20px;
+}
+.jiaolian3{
+	width:350px;
+	height:350px;
+	margin-left:100px;
+	margin-top:126px;
+	border-radius:20px;
+}
+.jiaolian4{
+	width:350px;
+	height:350px;
+	margin-left:120px;
+	margin-top:50px;
+	border-radius:20px;
+}
+.jiaolian5{
+	width:350px;
+	height:350px;
+	margin-left:120px;
+	margin-top:50px;
+	border-radius:20px;
+}
+.jiaolian6{
+	width:350px;
+	height:350px;
+	margin-left:100px;
+	margin-top:50px;
+}
+.jiaolian>div>div{
+	width:350px;
+	height:350px;
+	display:none; 
+	background-color:black;
+	opacity: 0.7;
+	z-index: 4;
+	border-radius:20px;
+	position:relative;
+	margin-top:-350px;
+}
+.px1{
+	color:white;
+	margin-top:10px;
+	font-size:27px;
+	font-weight:bold;
+}
+.px{
+	color:white;
+	margin-top:10px;
+	font-size:15px;
+}
+.pl{
+	color:white;
+	text-align:center;
+	margin-top:40px;
+	font-size:18px;
+}
+.pl1{
+	width:250px;
+	height:50px;
+	color:white;
+	margin-left:50px;
+	text-align:center;
+	font-size:18px;
+	margin-top:40px;
+}
+.pl2{
+	color:white;
+	text-align:center;
+	font-size:18px;
+	margin-left:20px;
+	margin-top:10px;
+}
+
+.kecheng{
+	width:1520px;
+	height:800px;
+	background-color:black;
+	opacity:0.85;
+}
+.kecheng1{
+	width:500px;
+	height:270px;
+	margin-top:125px;
+	margin-left:-610px;
+	border-radius:20px;
+}
+.kecheng2{
+	width:500px;
+	height:270px;
+	margin-top:125px;
+	margin-left:20px;
+	border-radius:20px;
+}
+.kecheng3{
+	width:500px;
+	height:270px;
+	margin-top:50px;
+	margin-left:175px;
+	border-radius:20px;
+}
+.kecheng4{
+	width:500px;
+	height:270px;
+	margin-top:50px;
+	margin-left:130px;
+	border-radius:20px;
+}
+.fen{
+	width:1520px;
+	height:1050px;
+	background-color:black;
+	opacity:0.9;
+}
+.fen1{
+	margin-left:160px;width:600px;height:450px;background-color:white;border-radius:20px;overflow: hidden;position:relative;
+}
+.fen1 img{
+  cursor: pointer;
+  transition: all 0.6s;
+}
+.fen1 img:hover{
+  transform: scale(1.4);
+}
+.fen2{
+	margin-left:20px;width:600px;height:450px;background-color:white;border-radius:20px;overflow: hidden;position:relative;
+}
+.fen2 img{
+  cursor: pointer;
+  transition: all 0.6s;
+}
+.fen2 img:hover{
+  transform: scale(1.4);
+}
+.fen3{
+	margin-left:160px;width:400px;height:300px;background-color:white;border-radius:20px;overflow: hidden;position:relative;
+}
+.fen3 img{
+  cursor: pointer;
+  transition: all 0.6s;
+}
+.fen3 img:hover{
+  transform: scale(1.4);
+}
+.fen4{
+	width:400px;height:300px;background-color:white;border-radius:20px;margin-left: 10px;overflow: hidden;position:relative;
+}
+.fen4 img{
+  cursor: pointer;
+  transition: all 0.6s;
+}
+.fen4 img:hover{
+  transform: scale(1.4);
+}
+.fen5{
+	width:400px;height:300px;background-color:white;border-radius:20px;margin-left: 10px;overflow: hidden;position:relative;
+}
+.fen5 img{
+  cursor: pointer;
+  transition: all 0.6s;
+}
+.fen5 img:hover{
+  transform: scale(1.4);
+}
+.p3{
+	width:60px;
+	height:50px;
+	float:right;
+	margin-top:600px;
+	border-radius:20px;
+	z-index:5000;
+	position:fixed;
+	background-color:gray;
+}
+.dibu{
+	width:1520px;
+	height:410px;
+	opacity:0.85;
+	background-color:black;
+}
+.dibu1{
+	width:1510px;
+	height:320px;
+	opacity:0.85;
+	background-color:black;
+}
+.dibu101{
+	width:350px;
+	height:300px;
+	margin-left:20px;
+	margin-top:10px;
+	color: white;
+}
+.p1{
+	margin-top:50px;
+	color:#eeeeee;
+	font-size:20px;
+}
+.p2{
+	color:#eeeeee;
+	margin-left:45px;
+	margin-top:10px;
+	font-size:18px;
+}
+.imgdibu{
+	width:150px;
+	height:150px;
+	margin-top:50px;
+	margin-left:20px;
+	border-radius:20px;
+}
+.dibu2{
+	width:1300px;
+	height:60px;
+	margin-left:150px;
+	margin-top:10px;
+	opacity:0.85;
+	background-color:black;
+}
+.sp1{
+	margin-top:20px;
+	margin-left:60px;
+	font-size:18px;
+	color:white;
+}

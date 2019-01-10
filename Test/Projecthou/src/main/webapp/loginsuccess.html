@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="iframe1">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/zui.min.js"></script>
+<link rel="stylesheet" href="css/zui.min.css" type="text/css">
+<script type="text/javascript">
+	$(function() {
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null)
+				return unescape(r[2]);
+			return null; //返回参数值
+		}
+		$("#tou #userzhongxin").click(function () {
+			
+			 /*  $(location).attr('href',
+						"shop.html");   */
+	   
+		})
+		//转码   解码
+		$($("#tou table td")[3]).html(
+				decodeURIComponent(getUrlParam("username") + ""));
+
+		var zui;
+		$.ajax({
+			async : false,
+			url : "http://172.20.10.11:8088/JiaLe/saxliebiao",
+			type : "GET",
+			datatype:"jsonp",
+			jsonp:"callback",
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			success : function(data) {
+				zui = JSON.parse(data);
+			}
+		});
+		$('#treeMenu').tree({
+			data : zui,
+			initialState : 'collapse',
+			itemWrapper : true
+
+		});
+		$('#treeMenu').on('click', 'a', function() {
+			$('#treeMenu li.active').removeClass('active');
+			$(this).closest('li').addClass('active');
+		});
+		$("#gm").click(function () {		
+			$(location).attr('href',"kefu.html?username="+
+					encodeURI(encodeURI(decodeURIComponent(getUrlParam("username") + ""))))
+					
+		});
+
+	})
+	
+	function cancel() {
+			
+			$.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/saxlogout",
+				type : "post",
+				datatype:"jsonp",
+				jsonp:"callback",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					zui = JSON.parse(data);
+					window.location.href ='home.jsp';
+				}
+			});
+		}
+</script>
+<style type="text/css">
+.menu {
+	width: 240px;
+	height: 100%;
+	border: 1px solid #000;
+	line-height: 60px;
+}
+
+#treeMenu {
+	width: 240px;
+	height: 100%;
+	border: 1px solid #000;
+}
+
+#treeMenu a {
+	margin-left: 40px;
+	font-size: 110%;
+	font-family: arial;
+	color: #ffffff;
+	font-size: 110%;
+}
+
+#treeMenu>ul>li {
+	height: 70px;
+}
+
+.dibu101 {
+	border: 1px solid;
+	width: 100%;
+	height: 48px;
+	position: fixed;
+	background-color: white;
+	bottom: 1;
+	line-height: 45px;
+	text-align: center;
+	/* width: 100%; */
+	float: left;
+}
+</style>
+</head>
+<body>
+	<div style="width: 1518px; min-width: 1300px; height: 710px;">
+		<div id="tou"
+			style="width: 100%; min-width: 1300px; height: 70px; background-color: #000; color: #fffff;">
+			<table
+				style="line-height: 70px; color: white; font-size: 16px; width: 100%; text-align: center;">
+				<tr>
+					<td style="width: 100px;"><img src="img/jl.jpg" style="width: 60px;height: 60px;"></td>
+					<td style="width: 200px;">嘉乐健身后台</td>
+					<td style="width: 50px;" id="userzhongxin"><a href="shop.html">用户中心1</a></td>
+					<td style="width: 50px; margin-left: 20px;">嘉乐健身</td>
+					<td style="width: 50px; margin-left: 20px;"><span id="gm">客服</span></td>
+					<td style="width: 70px;" onclick="cancel()">退出登录</td>
+				</tr>
+			</table>
+		</div>
+		<div
+			style="width: 240px; float: left; border: 1px solid #000; background-color: #000;">
+			<nav class="menu" data-ride="menu"
+				style="width: 240px; animate: true; margin-top: 30px;">
+				<div style="float: left; width: 240px; height: 615px;">
+					<ul id="treeMenu" class="tree tree-menu"
+						style="width: 240px; height: 100%; overflow: auto;"></ul>
+				</div>
+			</nav>
+		</div>
+		<div
+			style="width: 1278px; min-width: 1000px; height: 580px; float: left;">
+			<iframe id="iframe1" name="iframe1" src="shop.html"
+				style="width: 1275px; height: 580px;"></iframe>
+			<div class="dibu101">
+				<p class="p1">郑州嘉乐健身俱乐部 E-mail：1729576635@qq.com
+					&nbsp;&nbsp;&nbsp;网址：http://www.jiale.com
+					温馨提示：适量健身&nbsp;&nbsp;&nbsp;有助健康 京备案：16047007号-2&nbsp;&nbsp;&nbsp;
+					京工网安：16047007号-1</p>
+
+
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>

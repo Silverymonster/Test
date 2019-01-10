@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>嘉乐加盟</title>
+
+
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<link rel="stylesheet" type="text/css" href="css/index.css" />
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<link rel="stylesheet" type="text/css" href="http://unpkg.com/element-ui@2.4.8/lib/theme-chalk/index.css">
+<link rel="stylesheet" type="text/css" href="css/jiameng.css" />
+
+
+</head>
+<body style="width:1520px; height: 2335px;">
+
+	
+<iframe src="dingtou.jsp" style="display:block;width:1520px;z-index:5000;position:fixed;top:0;height: 185px;border: 0px">
+</iframe>
+	<!-- 轮播 -->
+	<div id="app">
+		<template> <el-carousel :interval="5000" arrow="always"
+			height="520px"> <el-carousel-item v-for="item in 1"
+			:key="item"> <img class="img_lb" title="2132"
+			id="img1" src="img/jm1.png" /> </el-carousel-item> <el-carousel-item v-for="item in 1"
+			:key="item"> <img class="img_lb" id="img2"
+			src="img/jm2.jpg" /> </el-carousel-item> <el-carousel-item v-for="item in 1"
+			:key="item"> <img class="img_lb" id="img3"
+			src="img/jm3.png" /> </el-carousel-item> <el-carousel-item v-for="item in 1"
+			:key="item"> <img class="img_lb" id="img4"
+			src="img/jm4.jpg" /> </el-carousel-item> <el-carousel-item v-for="item in 1"
+			:key="item"> <img class="img_lb" id="img5"
+			src="img/jm5.jpg" /> </el-carousel-item> </el-carousel> </template>
+	</div>
+	<!-- 加盟 -->
+	<div class="jm">
+		<p
+			style="margin-top: 6%; font-weight: bold; text-align: center; font-size: 2.3vm; color: #5c5e6b;">加盟直营化管理</p>
+		<p style="text-align: center; font-size: 1.25vm; color: #5c5e6b;">总部全程支持、一站式服务</p>
+
+		<div style="margin-left: 13%; float: left;" class="div">
+			<ul>
+				<li class="img"><img src="img/jmlc.png">
+					<p class="lip">选址评估</p></li>
+				<li><img src="img/jmlc2.png"></li>
+				<li class="img"><img src="img/jmlc3.png">
+					<p class="lip">执照办理</p></li>
+				<li><img src="img/jmlc2.png"></li>
+				<li class="img"><img src="img/jmlc4.png">
+					<p class="lip">设计装修</p></li>
+				<li><img src="img/jmlc2.png"></li>
+				<li class="img"><img src="img/jmlc5.png">
+					<p class="lip">预售推广</p></li>
+				<li><img src="img/jmlc2.png"></li>
+				<li class="img"><img src="img/jmlc6.png">
+					<p class="lip">开业运营</p></li>
+
+			</ul>
+		</div>
+
+	</div>
+
+
+
+<!-- 客服 -->
+	<div class="kefu">
+		<div class="left">
+			<!-- <img class="ren" src="img/kefu2.jpg"/>
+			<p style="text-align: center;">在线留言</p> -->
+		</div>
+			<div  class="kfdiv">
+			<ul>
+				<li class="kf"><img src="img/kf1.png" class="kfimg">
+					<p class="lip">手环</p>
+					<p class="lip">开启场馆所有设备，掌控每日健身动态</p>
+				</li>
+				<li class="kf"><img src="img/kf2.png" class="kfimg">
+					<p class="lip">智能AB门禁</p>
+					<p class="lip">高精准人脸识别，全面升级24H自助健身</p>
+				</li>
+				<li class="kf"><img src="img/kf3.png" class="kfimg">
+					<p class="lip">智能跑步机</p>
+					<p class="lip">超大屏幕触摸屏，在线观看影视、听音乐 </p>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="right">
+			<img  src="img/kefu.png"  id="kf"/>
+		</div>
+		 
+	</div>
+	
+	<div class="di">
+	<img src="img/ppys.png" class="diimg"/>
+	<div style="width:138px;height:138px;margin-right:170px;margin-top:80px;float:right;">
+		<img src="img/android.jpg" alt="android版">
+		<p style="margin-left:20px;color:white;font-size:20px;">android版</p>
+	</div>
+	<div style="width:138px;height:138px;margin-right:170px;margin-top:-166px;float:right;">
+		<img src="img/iphone.jpg" alt="iphone版">
+		<p style="margin-left:20px;color:white;font-size:20px;">iphone版</p>
+	</div>
+	</div>
+	<!-- 底部 -->
+	<iframe src="dibu.html" style="display:block;width:1520px;height:410px;border: 0px;"></iframe>
+	
+
+	
+	
+<script type="text/javascript">
+	new Vue().$mount('#app')
+</script>
+</body>
+<script type="text/javascript">
+function getUrlParam(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var r = window.location.search.substr(1).match(reg); //匹配目标参数
+	if (r != null)
+	return unescape(r[2]);
+	return null; //返回参数值
+	}
+$(function(){
+	$("#kf").click(function(){
+		$(location).attr('href',
+				"yonghu.html?username="+encodeURI(getUrlParam("username"))
+				
+				)
+	
+})
+})
+</script>
+</html>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+http://www.springframework.org/schema/context 
+http://www.springframework.org/schema/context/spring-context-4.0.xsd
+http://www.springframework.org/schema/mvc 
+http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!-- 扫描注解 -->
+	<context:component-scan base-package="com.jiale.controller" />
+	
+	<!-- 两种静态文件不拦截的方式 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/"></property>
+		<property name="suffix" value=".html"></property>
+	</bean>
+	
+	<!-- 静态文件不拦截 以默认serlvet <mvc:default-servlet-handler/> -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<!-- 静态文件不拦截 以MVC框架 -->
+	<mvc:resources location="/" mapping="/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/img/" mapping="/img/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+	
+	
+	<!-- spring和shiro的联合  -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	
+	
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/*" />
+			<bean class="com.jiale.intercrptor.LoginHandle" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<mvc:annotation-driven>
+		<mvc:message-converters
+			register-defaults="true">
+			<bean
+				class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json</value>
+					</list>
+				</property>
+				<property name="features">
+					<list>
+						<value>WriteMapNullValue</value>
+						<value>QuoteFieldNames</value>
+					</list>
+				</property>
+				<property name="dateFormat" value="yyyy-MM-dd HH:mm:ss" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8" />
+        <!-- 指定所上传文件的总大小,单位字节。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
+        <property name="maxUploadSize" value="10240000" />
+    </bean>
+    
+</beans>

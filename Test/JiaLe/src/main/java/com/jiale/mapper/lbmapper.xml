@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lb.jiale.mapper" >
+	<!-- 前台登录 -->
+	<select id="lblogin" parameterType="map" resultType="map">
+		SELECT * FROM userinfo
+		JOIN userrole ON userinfo.`userid`=userrole.`userid`
+		JOIN roleinfo ON roleinfo.`roleid`=userrole.`roleid`
+		<if test="username != null">
+		WHERE userinfo.`username`=#{username}
+		</if>
+	</select>
+	
+	<!-- 查询总店图片 根据店铺查 --> 
+    <select id="lbselectpic" parameterType="map" resultType="map" >
+		SELECT * FROM pictureinfo 
+		WHERE shopid=#{shopid}
+    </select>
+    
+   <!-- 注册用户 -->
+   <insert id="lbinsertuser" parameterType="map">
+   		insert into userinfo(username,saltvalue,encryption,phone,sex,regdate) 
+   		values(#{username},#{saltvalue},#{encryption},#{phone},#{sex},now())
+   </insert>
+   
+   <!-- 添加用户与角色的中间表 -->
+   <insert id="lbinsertuserrole" parameterType="map">
+   		INSERT INTO userrole(roleid) VALUES(3)
+   </insert>
+   
+   <!-- 查询用户与角色的中间表 -->
+   <select id="lbselectuserrole" parameterType="map" resultType="map">
+		SELECT userid FROM userinfo WHERE username=#{username}
+	</select>
+	
+	<!-- 更新用户与角色的中间表 -->
+   <update id="lbupdateuserrole" parameterType="map" >
+   		UPDATE userrole SET roleid=1 WHERE userid =#{userid}
+   </update>
+   
+   <!-- 注册店长 -->
+   <insert id="lbinsertdz" parameterType="map">
+   		INSERT INTO shop(`shopname`,`shopspace`,`telephone`,`shophours`,`shoparea`,`email`,sid)
+		VALUES(#{shopname},#{shopspace},#{telephone},#{shophours},#{shoparea},#{email},#{sid})
+   </insert>
+   
+   <!-- 查询用户表下的教练 -->
+   <!--&gt;=大于等于   &lt;=小于等于-->  
+	<select id="lbselectuserinfo" parameterType="map" resultType="map">
+		SELECT * FROM userinfo 
+		WHERE userid &gt;= 140 AND userid &lt;= 145
+	</select>
+	
+	<!-- 模糊查询搜索用户教练店铺 --> 
+    <select id="lbselectuser" parameterType="map" resultType="map" >
+		SELECT userinfo.`username`,roleinfo.`rolename`,shop.`shopname` FROM userinfo
+		JOIN userrole ON userinfo.`userid` = userrole.`userid`
+		JOIN roleinfo ON roleinfo.`roleid` = userrole.`roleid`
+		JOIN shoprole ON userinfo.`userid` = shoprole.`userid`
+		JOIN shop ON shop.`sid` = shoprole.`sid`
+		WHERE username LIKE '%小%' OR rolename LIKE '%教%' OR shopname LIKE '%嘉乐%' 
+    </select>
+    
+    <!-- 查询模板店铺下的信息 -->
+	<select id="lbselectshopinfo" parameterType="map" resultType="map">
+		SELECT shop.`shoppicture`, shop.`shopname`,shop.`shopspace`,shop.`telephone`,shop.`shophours`,shop.`shoparea`,shop.`email` FROM shop 
+		WHERE shopid=#{shopid}
+	</select>
+	
+	<!-- 查询模板店铺下的教练 -->
+	<select id="lbselectshopcoach" parameterType="map" resultType="map">
+		SELECT u2.* FROM shop
+		JOIN shoprole ON shoprole.`sid`=shop.`sid`
+		JOIN userinfo u1 ON shoprole.`userid`=u1.`userid`
+		JOIN userinfo u2 ON u2.uid=u1.`userid`
+		WHERE shop.`shopid`=#{shopid}
+	</select>
+	
+	<!-- 查询模板店铺下的器材 -->
+	<select id="lbselectshopequipment" parameterType="map" resultType="map">
+		SELECT * FROM equipment WHERE shopid=#{shopid}
+	</select>
+	
+	<!-- 查询模板店铺下的器材 -->
+	<update id="lbupdateuid" parameterType="map">
+		UPDATE userinfo SET uid
+		= 101
+		WHERE username = #{username}
+	</update>
+   <update id="lbupdateshoprole" parameterType="map">
+		UPDATE shoprole SET sid
+		= #{userid}
+		WHERE userid = #{userid}
+	</update>
+ </mapper> 

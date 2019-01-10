@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="http://unpkg.com/element-ui@2.4.9/lib/index.js"></script>
+<script type="text/javascript" src="js/coashjs.js"></script>
+<link rel="stylesheet" href="css/coachcss.css" type="text/css">
+<script type="text/javascript">
+$(function () {	
+	function jiazai() {
+		var coachdata;
+		 $.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/saxselectuser",
+				type : "GET",
+				datatype:"jsonp",
+				jsonp:"callback",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					coachdata=JSON.parse(data);					
+				}
+			});
+		var Main = {
+				 methods: {
+				      handleClick(row) {
+				    	  $("#zhezhao").show();
+				    	$("#xiugairo").show(1000);
+				        $($("#xiugairo").find("p")[0]).find("span").html(row.userid);
+				        $($("#xiugairo").find("p")[1]).find("span").html(row.username);
+				        $($("#xiugairo").find("p")[2]).find("span").html(row.rolename);       
+				        xiala();
+				        //$("#xiugairo").find("input").val();
+				      },
+				      shanchu(row) {
+				    	  //删除
+				    	/*   $.ajax({
+								async : false,
+								url : "http://172.20.10.11:8088/JiaLe/saxselectuser?userid="+row.userid,
+								type : "GET",
+								datatype:"jsonp",
+								jsonp:"callback",
+								contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+								success : function(data) {
+									alert(data);
+									coachdata=JSON.parse(data);	
+									 $("#zhezhao").hide();
+								    	$("#xiugairo").hide();
+								}
+							}); */
+				        //$("#xiugairo").find("input").val();
+				      }
+				    },
+			    data() {
+			      return {	    	
+			    	 tableData:coachdata	    		
+			      }
+			    }
+			  };
+			var Ctor = Vue.extend(Main);
+			new Ctor().$mount('#app');	
+	}
+	jiazai();	
+	function xiala() {
+		var xiala;
+		 $.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/saxselectroles",
+				type : "GET",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					xiala=JSON.parse(data);					
+				}
+			});
+		var Main = {
+			    data() {
+			      return { options2:xiala,
+			          value2:'' };
+			    }
+			  }
+			var Ctor = Vue.extend(Main)
+			new Ctor().$mount('#app1')
+	}
+	$("#fanhui").click(function () {
+		 $("#zhezhao").hide();
+	    	$("#xiugairo").hide();
+	})
+	$("#tijiao").click(function () {
+		$($("#xiugairo").find("p")[1]).find("span").html();
+		   $.ajax({
+			async : false,
+			url : "http://172.20.10.11:8088/JiaLe/saxupdaterole",
+			data:{'userid':$($("#xiugairo").find("p")[0]).find("span").html(),
+				'rolename':$($("#xiugairo").find("p")[2]).find("span").html(),
+				'xiugai':$("#app1 input").val()},
+			type : "post",
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			success : function(data) {
+				xiala=JSON.parse(data);					
+			}
+		});
+		   
+	})
+})
+	</script>
+	
+	
+	<style type="text/css">
+	#zhezhao{
+	display: none; 
+	background-color: #000;
+	opacity: 0.7;
+	z-index: 4;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	}
+	#xiugairo{
+	display: none; 
+	background-color: #eeeeee;
+	z-index: 5;
+	position: fixed;
+	top: 20%;
+	left: 30%;
+	width:600px;
+	height: 400px;
+	margin: auto;
+	line-height: 40px;
+	border-radius: 80px;
+	overflow: hidden;
+	}
+	#xiugairo p{
+	background-color:#ffffff;
+	border-bottom-color: #000;
+	
+	}
+	/* #app1{
+	width:200px;
+	height: 100px;
+	} */
+	</style>
+</head>
+<body>
+<div id="app">
+		<el-container style="height: 535px; border: 1px solid #eee">
+		<el-container>
+		    <el-header style="text-align: right; font-size: 12px">
+		      <el-dropdown>
+		        <i class="el-icon-setting" style="margin-right: 15px"></i>
+		        <el-dropdown-menu slot="dropdown">
+		          <el-dropdown-item id="querycoach">查看</el-dropdown-item>
+		          <el-dropdown-item id="addcoach">新增</el-dropdown-item>
+		          <!-- <el-dropdown-item>删除</el-dropdown-item> -->
+		        </el-dropdown-menu>
+		      </el-dropdown>
+		      <span>用户管理</span>
+		    </el-header>
+		<!-- <el-aside width="200px" style="background-color: rgb(238, 241, 246)"> -->
+			<el-main>
+				 <el-table :data="tableData" max-height="450"> 
+						<el-table-column  fixed prop="zi" label="用户id" width="1"> </el-table-column> 
+						<el-table-column prop="userpicture" label="头像" width="120"> 
+						<template slot-scope="scope">
+						      <img :src="scope.row.userpicture" alt="" style="width: 50px;height: 50px">
+						    </template>
+						</el-table-column> 		
+						<el-table-column prop="zi" label="姓名" width="100"> </el-table-column> 
+						<el-table-column prop="username" label="上级" width="100"> </el-table-column> 	
+						<el-table-column prop="sex" label="性别" width="100"> </el-table-column> 
+						<el-table-column prop="phone" label="电话" width="150"> </el-table-column> 
+				        <el-table-column prop="weight" label="体重" width="100"> </el-table-column> 
+						<el-table-column prop="height" label="身高" width="100"> </el-table-column>    
+						<el-table-column prop="rolename" label="角色" width="100"> </el-table-column>
+						<el-table-column prop="birthday" label="生日" width="150"> </el-table-column>
+						<el-table-column prop="regdate" sortable label="注册时间" width="150"> </el-table-column>
+						<el-table-column prop="remarks" label="简介" width="160"> </el-table-column>
+						<el-table-column fixed="right" label="操作" width="150">
+						      <template slot-scope="scope">
+						        <el-button @click="handleClick(scope.row)" type="text" size="20px">修改</el-button>
+						        <el-button @click="shanchu(scope.row)" type="text" size="small">删除</el-button>
+						      </template>
+					    </el-table-column>					
+				</el-table> 
+			</el-main>
+			</el-container>
+		</el-container>
+	
+	</div>
+	
+	<div id="zhezhao" style=""></div>
+	<div id="xiugairo" style="">
+	<p style="text-align: center;">用户序号:<span></span></p>
+	<p style="text-align: center;">用户名称:<span></span></p>
+	<p style="text-align: center;">当前角色:<span></span></p>
+	<p style="text-align: center;">用户                                                                                                          请选择</p>
+		<div id="app1" style="width: 200px;margin: auto;height: 60px;">
+			<template>
+			  <el-select v-model="value2" placeholder="请选择">
+			    <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+			    </el-option>
+			  </el-select>
+			</template>
+		</div>
+		<input id="tijiao" style="width: 100px;height: 40px;text-align: center;background-color: #eeeeee;margin-top: 10px;margin: auto;display: block;" type="button" value="确定">
+	<input id="fanhui" style="width: 100px;height: 40px;text-align: center;background-color: #eeeeee;margin-top: 10px;margin: auto;display: block;" type="button" value="返回">
+	</div>
+</body>
+</html>

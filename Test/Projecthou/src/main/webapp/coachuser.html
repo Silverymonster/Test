@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="http://unpkg.com/element-ui@2.4.9/lib/index.js"></script>
+<script type="text/javascript" src="js/coashjs.js"></script>
+<link rel="stylesheet" href="css/coachcss.css" type="text/css">
+<script type="text/javascript">
+$(function () {
+
+		function getUrlParam(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+			var r = window.location.search.substr(1).match(reg); //匹配目标参数
+			if (r != null)
+				return unescape(r[2]);
+			return null; //返回参数值
+		}
+	var coachdata;
+	 $.ajax({
+			async : false,
+			url : "http://172.20.10.11:8088/JiaLe/wxyselectshop?uid="+getUrlParam("uid"),
+			type : "post",
+			datatype:"jsonp",
+			jsonp:"callback",
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			success : function(data) {
+			
+				coachdata=JSON.parse(data);					
+			}
+		}); 
+	 var Main = {
+				methods: {
+				      handleClick(row) {
+				    	  $.ajax({
+				  			async : false,
+				  			url : "http://172.20.10.11:8088/JiaLe/wxyselectcomments?uid="+row.userid,
+				  			type : "GET",
+				  			datatype:"jsonp",
+				  			jsonp:"callback",
+				  			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				  			success : function(data) {
+				  				
+				  				coachdata=JSON.parse(data);					
+				  			}
+				  		}); 
+				      },
+				      chakan(row){
+				    	  row.userid;
+				    	  $(location).attr('href',
+									"comments.html?uid="+row.userid);
+				      }
+				    },
+				    
+			    data() {
+			      return {	    	
+			    	 tableData:coachdata	    		
+			      }
+			    }
+			  };
+			var Ctor = Vue.extend(Main);
+			new Ctor().$mount('#app');	
+})
+</script>
+</head>
+<body>
+<div id="app">
+		<el-container style="height: 500px; border: 1px solid #eee">
+		<el-container>
+		    <el-header style="text-align: right; font-size: 12px">
+		      <el-dropdown>
+		        <i class="el-icon-setting" style="margin-right: 15px"></i>
+		        <el-dropdown-menu slot="dropdown">
+		          <el-dropdown-item id="querycoach">查看</el-dropdown-item>
+		          <el-dropdown-item id="addcoach">新增</el-dropdown-item>
+		          <!-- <el-dropdown-item>删除</el-dropdown-item> -->
+		        </el-dropdown-menu>
+		      </el-dropdown>
+		      <span>教练管理</span>
+		    </el-header>
+		<!-- <el-aside width="200px" style="background-color: rgb(238, 241, 246)"> -->
+			<el-main>
+				 <el-table :data="tableData" max-height="450"> 
+						<el-table-column prop="userid" label="教练id" width="140"> </el-table-column> 
+						<el-table-column prop="userpicture" label="头像" width="140"> 
+							<template slot-scope="scope">
+						      <img :src="scope.row.userpicture" alt="" style="width: 50px;height: 50px">
+						    </template>
+						</el-table-column> 		
+						<el-table-column prop="username" label="姓名" width="120"> </el-table-column> 
+						<el-table-column prop="sex" label="性别"> </el-table-column> 
+						<el-table-column prop="phone" label="电话"> </el-table-column> 
+				        <el-table-column prop="weight" label="体重"> </el-table-column> 					
+						<el-table-column prop="height" label="身高"> </el-table-column>    
+				        <el-table-column prop="regdate" label="注册时间"> </el-table-column>
+						<el-table-column prop="remarks" label="简介"> </el-table-column>
+						<el-table-column prop="state" label="状态" width="160"> </el-table-column>
+				        
+						<el-table-column fixed="right" label="操作" width="100">						
+				        	<el-table-column fixed="right" label="操作" width="100">
+						      <template slot-scope="scope">						      
+						        <el-button @click="handleClick(scope.row)" type="text" size="small">删除</el-button>
+						      <el-button @click="chakan(scope.row)" type="text" size="small">查看评论</el-button>
+						    
+						      </template>
+					    </el-table-column>		
+				</el-table> 
+			</el-main>
+			</el-container>
+		</el-container>	
+		
+	</div>
+</body>
+</html>

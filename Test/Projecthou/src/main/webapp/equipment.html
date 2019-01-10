@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="http://unpkg.com/element-ui@2.4.9/lib/index.js"></script>
+<script type="text/javascript" src="js/coashjs.js"></script>
+<script type="text/javascript" src="js/upload.js"></script>
+<link rel="stylesheet" href="css/coachcss.css" type="text/css">
+<script type="text/javascript">
+$(function () {	
+	
+	 function jiazai() {
+		
+		var coachdata;
+		 $.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/selectequipment",
+				type : "post",
+				datatype:"jsonp",
+				jsonp:"callback",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					
+					coachdata=JSON.parse(data);					
+				},
+				data:function(data) {
+					alert("错误");
+								
+				},
+				
+			});
+		var Main = {
+				 methods: {
+				      handleClick(row) {
+				    	  $.ajax({
+								async : false,
+								url : "http://172.20.10.11:8088/JiaLe/saxdeletequipment?equipmentid="+row.equipmentid,
+								type : "post",
+								datatype:"jsonp",
+								jsonp:"callback",
+								contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+								success : function(data) {
+									coachdata=JSON.parse(data);	
+									$(location).attr('href',
+											"equipment.html")
+								},
+								data:function(data) {
+									alert("错误");
+								},
+							});
+				      }
+				    },
+			    data() {
+			      return {	    	
+			    	 tableData:coachdata	    		
+			      }
+			    }
+			  };
+			var Ctor = Vue.extend(Main);
+			new Ctor().$mount('#app');	
+	}
+	jiazai();	
+	$("#addcoach").click(function () {
+		$("#zhezhao").show();
+    	$("#xiugairo").show(1000);
+	});
+	$("#fanhui").click(function () {
+		 $("#zhezhao").hide();
+	    	$("#xiugairo").hide();
+	});
+	/*  $("#quding").click(function () {
+		//alert($("#img1").attr("src"));
+		//alert($("#xdaTanFileImg2").val());
+		var form = new FormData(document.getElementById("form1"))
+		 $.ajax({
+		     url:"sss",
+		     type:"post",
+		     data:form,
+		     processData:false,
+		     contentType:false,
+		     async : false,
+		     success:function(data){
+		      //window.clearInterval(timer);   
+		      alert("成功");
+		     },
+		     error: function (XMLHttpRequest, textStatus, errorThrown) {
+		               alert(XMLHttpRequest.status);
+		               alert(XMLHttpRequest.readyState);
+		           alert(textStatus);
+		       }
+	    });
+		 
+	});  */
+	/* var s= {
+	    data() {
+	      return {
+	        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+	      };
+	    },
+	    methods: {
+	      handleRemove(file, fileList) {
+	        console.log(file, fileList);
+	      },
+	      handlePreview(file) {
+	        console.log(file);
+	      },
+	      handleExceed(files, fileList) {
+	        this.$message.warning('当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件');
+	      },
+	      beforeRemove(file, fileList) {
+	        return this.$confirm('确定移除 ${ file.name }？');
+	      }
+	    }
+	  }
+	var ss={
+			    data() {
+			      return {
+			        form: {
+			         
+			        }
+			      }
+			    },
+			    methods: {
+			      onSubmit() {
+			        console.log('submit!');
+			      }
+			    }
+			  
+	}
+	
+	var Ctor = Vue.extend(ss);
+	new Ctor().$mount('#xiugairo');	 */
+	
+})
+	</script>
+	
+	
+	<style type="text/css">
+	
+	#zhezhao{
+	display: none; 
+	background-color: #000;
+	opacity: 0.7;
+	z-index: 4;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	}
+	 #xiugairo{
+	display: none; 
+	background-color: #eeeeee;
+	z-index: 5;
+	position: fixed;
+	top: 20%;
+	left: 30%;
+	width:600px;
+	height: 400px;
+	margin: auto;
+	line-height: 40px;
+	border-radius: 80px;
+	overflow: hidden;
+	} 
+	
+	/* #app1{
+	width:200px;
+	height: 100px;
+	} */
+	</style>
+</head>
+<body>
+<div id="app">
+		<el-container style="height: 535px; border: 1px solid #eee">
+		<el-container>
+		    <el-header style="text-align: right; font-size: 12px">
+		      <el-dropdown>
+		        <i class="el-icon-setting" style="margin-right: 15px"></i>
+		        <el-dropdown-menu slot="dropdown">
+		          <el-dropdown-item id="addcoach">新增</el-dropdown-item>
+		          <!-- <el-dropdown-item>删除</el-dropdown-item> -->
+		        </el-dropdown-menu>
+		      </el-dropdown>
+		      <span>器材管理</span>
+		    </el-header>
+		<!-- <el-aside width="200px" style="background-color: rgb(238, 241, 246)"> -->
+			<el-main>
+				 <el-table :data="tableData" max-height="430"> 
+						<el-table-column  fixed prop="equipmentid" label="器材id" width="140"> </el-table-column> 
+						<el-table-column prop="equipmentname" label="器材名称" width="140"> </el-table-column> 		
+						<el-table-column prop="equipmentpicture" label="器材图片" width="120"> 
+							<template slot-scope="scope">
+						      <img :src="scope.row.equipmentpicture" alt="" style="width: 50px;height: 50px">
+						    </template>
+						</el-table-column> 
+						<el-table-column prop="equipmentcontent" label="器材描述"> </el-table-column> 
+   						<el-table-column fixed="right" label="操作" width="100">
+						      <template slot-scope="scope">
+						        <el-button @click="handleClick(scope.row)" type="text" size="20px">删除</el-button>
+						      </template>
+					    </el-table-column>					
+				</el-table> 
+			</el-main>
+			</el-container>
+		</el-container>
+	
+	</div>
+	
+	<div id="zhezhao" style=""></div>
+	<div id="xiugairo" style="">
+	<form action="qicai" enctype="multipart/form-data"  method="post" style="width: 400px;height: 300px;border: 1px solid #000;margin: auto;margin-top: 50px;line-height: 50px;">
+	<table style="width: 400px;height: 300px;border: 1px solid #000;">
+	<tr>
+	<td>器材名称</td>
+	<td><input type="text" name="equipmentname"></td>
+	</tr>
+	<tr>
+	<td>器材图片</td>
+	<td>
+	<img id="img1" alt="器材图片" src="" style="width:90px;height:90px;">
+	<input  type="file" style="width: 55px;height: 22px;overflow: hidden;" name="img" id="xdaTanFileImg" onchange="xmTanUploadImg(this,1)" accept="image/*"/>
+	</td>
+	</tr>
+	<tr>
+	<td>器材描述</td>
+	<td><input type="text" name="equipmentcontent"></td>
+	</tr>
+	<tr>
+	<td><input type="submit" value="确定"  id="tijiao"></td>
+	<td><input type="button" value="返回" id="fanhui"></td>
+	</tr>
+	</table>
+	</form>
+	<!-- <el-form ref="form" :model="form" label-width="80px" >
+	
+  <el-form-item label="器材名称">
+    <el-input v-model="form.name"></el-input>
+  </el-form-item>
+  <el-form-item label="器材图片">
+    <el-input v-model="form.name"></el-input>
+  </el-form-item>
+  <el-upload0
+  class="upload-demo"
+  action="https://jsonplaceholder.typicode.com/posts/"
+  :on-preview="handlePreview"
+  :on-remove="handleRemove"
+  :before-remove="beforeRemove"
+  multiple
+  :limit="3"
+  :on-exceed="handleExceed"
+  :file-list="fileList">
+  <el-button size="small" type="primary">点击上传</el-button>
+  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+</el-upload>
+ 
+  <el-form-item label="活动形式">
+    <el-input type="textarea" v-model="form.desc"></el-input>
+  </el-form-item>
+  <el-form-item>
+    <el-button type="primary" @click="onSubmit">立即创建</el-button>
+    <el-button>取消</el-button>
+  </el-form-item>
+</el-form> -->
+	</div> 
+</body>
+</html>

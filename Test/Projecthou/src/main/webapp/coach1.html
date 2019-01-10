@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>明显教练</title>
+<link rel="stylesheet" href="css/sui.min.css">
+<script src="js/sui.min.js"></script>
+<script src="js/index.js"></script>
+
+<script  src="js/jquery-3.3.1.js"></script>
+<link rel="stylesheet" href="css/index.css">
+
+<link rel="stylesheet" href="css/coach.css">
+
+<style type="text/css">
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#header {
+	width: 100%;
+	height: 3%;
+}
+
+#cen_1 {
+	width: 100%;
+	height: 35%;
+	margin-top:4%;
+	background-color: #d1b291;
+}
+
+.img_0 {
+	width: 30%;
+	height: 100%;
+	margin-left: 13%;
+	position: relative;
+	float: left;
+	border-radius: 50%;
+-moz-border-radius: 50%;
+-webkit-border-radius: 50%;
+}
+
+#cen_1_1 {
+	width: 35%;
+	height: 100%;
+	margin-left: 5%;
+	float: left;
+}
+
+
+
+#cen_2 {
+	width: 70%;
+	height: 25%;
+	margin-left: 13.2%;
+	
+}
+
+.cen_2_1 {
+	width: 24%;
+	height: 65%;
+	margin-left: 7%;
+	margin-top: 1%;
+	float: left;
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	
+}
+
+.cen_2_1:hover img {
+	transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+}
+
+.cen_2_1  img {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	display: block;
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	transition: all 0.2s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+}
+
+
+
+.cen_3{
+	 overflow-x:scroll;
+	width: 70.5%;
+	height:45%;
+	margin-top:-1.3%;
+	margin-left: 11.2%;
+	background-color: #ffffff;
+}
+
+
+.img_4{
+margin-top:1%;
+width: 25%;
+height: 35%;
+margin-left:13%;
+line-height: 100%;
+border-radius: 50%;
+-moz-border-radius: 50%;
+-webkit-border-radius: 50%;
+float: left;
+}
+.cen_3_2{
+width: 15%;
+height: 15%;
+font-size:15px;
+margin-top:1.9%;
+font-family:sans-serif;
+font-size:15px;
+margin-left:-5%;
+float: left;
+	}
+.tr2{
+width:100%;
+margin-top: 2%;
+height:10%;
+
+}
+</style>
+</head>
+<!-- ajax教练信息页面和教练下的用户信息 -->
+
+<!-- 接受教练的id -->
+ 
+<script type="text/javascript">
+
+
+$(function(){
+	
+	function getUrlParam(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var r = window.location.search.substr(1).match(reg); //匹配目标参数
+	if (r != null)
+	return unescape(r[2]);
+	return null; //返回参数值
+	}
+	
+	var jiao=getUrlParam("userid");
+	
+	var obj;
+
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/wxyselectuser?userid="+jiao,
+		type:"post",
+		async:false,
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+		 obj=JSON.parse(data);
+		
+			if(obj!=""){
+		
+				for(let i=0;i<obj.length;i++){
+					$("#img"+i+"").attr("src",obj[i].userpicture);
+					$("#n"+i+"").html(obj[i].username);
+					$("#h"+i+"").html("身高:"+obj[i].height);
+					$("#w"+i+"").html("体重:"+obj[i].weight);
+					$("#b"+i+"").html("生日:"+obj[i].birthday);
+					$("#p"+i+"").html("手机号:"+obj[i].phone);
+					$("#r"+i+"").html("工作经验:"+obj[i].regdate);
+					
+				}
+			}
+			
+			
+		}
+		
+	})
+$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/wxyselectcomments?userid="+jiao,
+		type:"post",
+		async:false,
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+			var obj=JSON.parse(data);
+		
+			if(obj!=""){
+		
+				for(let i=0;i<obj.length;i++){
+					
+					 $($("#table .tr")[i]).after($(" <tr class=\"tr\"> <td>"+
+							obj[i].username+"</td><td>"+
+							obj[i].phone+"</td><td>"+
+							obj[i].height+"</td><td>"+
+							obj[i].weight+"</td><td>"+
+							"</tr>"))
+							
+					 $($("#table2 .tr2 ")[i]).after($(" <tr class='tr2'> <td><img class=\"img_4\" src='"+
+					 obj[i].userpicture+"'></td><td style='font-size: 22px; margin-right:3%; margin-left:-30%; '>"+
+					 obj[i].username+"</td><td cless=\"cen_3_2\" >"+
+					 obj[i].comms+"</td><td>"+
+					 obj[i].ctime+"</td><td>"+
+					 "</tr>"))
+				 	
+				}
+			}
+			
+			
+		}
+		
+	})	
+  
+
+	
+	
+	})
+</script>
+
+
+<body
+	style="width: 1520px; height: 1500px; background-color: #f0f0f0;">
+	<!------------------ header----------------------------->
+	<iframe src="dingtou.jsp" style="display:block;width:100%;z-index:5000;position:fixed;top:0;height: 185px;border: 0px">
+</iframe>
+<div  style="width: 100%; border: 1px solid white;">
+
+</div>
+	<!--------------------教练图 --教练信息------------------------------->
+	<div id="cen_1">
+		<img class="img_0" id="img0" src="" />
+		<div id="cen_1_1">
+			<p
+				style="font-size: 30px; color: red; margin-left: 10%; margin-top: 14%;margin-bottom: 5%;"   id="n0">xx</p>
+			<p 
+				style="font-size: 20px; color: red; margin-left: 10%; margin-top: 4%" >个人资料</p>
+			<p class="h"
+				style="font-size: 20px; font-family: Sans-serif; margin-left: 10%; margin-top: 10%"  id="h0">身高:</p>
+			<p class="w"
+				style="font-size: 20px; font-family: Sans-serif; margin-left: 10%; margin-top: 5%"  id="w0">体重:</p>
+			<p class="l"
+				style="font-size: 20px; font-family: Sans-serif; margin-left: 10%; margin-top: 5%"  id="b0">生日:</p>
+			<p class="p"
+				style="font-size: 20px; font-family: Sans-serif; margin-left: 10%; margin-top: 5%"  id="p0">手机号:</p>
+			
+			<p class="t"
+				style="font-size: 20px; font-family: Sans-serif; margin-left: 10%; margin-top: 5%" id="r0">任职时间:</p>
+
+		</div>
+		
+	</div>
+	<!--------------------受理用户------------------------------->
+	
+	<div id="cen_2">
+	
+	 <h3 style="margin-bottom: 2%; margin-left: 3%;">受理用户</h3>
+<table class="sui-table table-bordered-simple" id="table">
+
+  <thead>
+    <tr>
+      <th>用户名</th>
+      <th>电话</th>
+      <th>身高</th>
+      <th>体重</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="tr">
+    
+    </tr>
+   
+    
+  </tbody>
+</table>
+	
+	</div>
+	<!--------------------用户留言------------------------------->
+		<!-- 	<div id="cen_3" style="background:url('img/as4.jpg')no-repeat;">  -->
+			
+		<h3 style="margin-bottom: 2%; margin-left: 15%;">用户留言</h3>
+		<div class="cen_3">
+			 <table  id="table2"  >
+			 		
+			 <tr class="tr2" style="border: 1px solid gray;">
+			 <td></td>
+			 
+			 </tr>
+			 
+			 </table>
+			 </div>
+		
+			
+			
+			
+	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+	<!-- 底部 -->
+
+<iframe src="dibu.html" style="display:block;width:105%; height: 21%;  ">
+</iframe>
+
+
+</body>
+ 
+  
+</html>

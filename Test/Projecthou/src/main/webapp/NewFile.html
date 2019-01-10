@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+$(function(){
+	   var $wrap = $(".wrap");
+	   var find = function(str){
+	    return $wrap.find(str);
+	   }
+	   var getJname = function(name){
+	    return find("input[name='"+name+"']");
+	   }
+	   $("#upload").click(function () {
+		   var form = new FormData(document.getElementById("tf"));
+		     $.ajax({
+		     url:"http://172.20.10.11:8088/JiaLe/excelin",
+		     type:"post",
+		     data:form,
+		     dataType:"json",
+		     processData:false,
+		     contentType:false,
+		     success:function(data){
+		      //window.clearInterval(timer);   
+		      
+		     },
+		     error: function (XMLHttpRequest, textStatus, errorThrown) {
+	              
+	                alert(XMLHttpRequest.status);
+	                alert(XMLHttpRequest.readyState);
+             alert(textStatus);
+	        }
+		    });
+	})
+	  
+	   
+	  })
+
+</script>
+</head>
+<body>
+<form id="tf">
+
+<p>
+     <input type="file" name="file" value="选择文件"/>
+    Excel文件上传：<input type="button" name="Upload" id="upload" value="upload"/>
+   </p>
+</form>
+</body>
+</html>

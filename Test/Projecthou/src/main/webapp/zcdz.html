@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="http://unpkg.com/element-ui@2.4.8/lib/theme-chalk/index.css">
+<link rel="stylesheet" href="css/dingtou.css">
+<link rel="stylesheet" href="css/zcdz.css">
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+</head>
+<script type="text/javascript">
+function Check(){
+if(document.getElementById('username').value=='') {
+ alert('必须输入姓名！');
+ document.getElementById('username').focus();
+ return false;
+}else if(document.getElementById('shopname').value=='') {
+	 alert('必须输入姓名！');
+	 document.getElementById('shopname').focus();
+	 return false;
+}else if(document.getElementById('shopspace').value=='') {
+	 alert('必须输入姓名！');
+	 document.getElementById('shopspace').focus();
+	 return false;
+}else if(document.getElementById('telephone').value=='') {
+	 alert('必须输入姓名！');
+	 document.getElementById('telephone').focus();
+	 return false;
+}else if(document.getElementById('email').value=='') {
+	 alert('必须输入姓名！');
+	 document.getElementById('email').focus();
+	 return false;
+}else{
+	$(function(){
+		$("#zcdz").click(function(){
+			$.ajax({
+				url:"http://172.20.10.11:8088/JiaLe/lbinsertdz",
+				type:"post",
+				data:$("#form").serialize(),
+				contentType:"application/x-www-form-urlencoded;charset=UTF-8",
+				async:false,
+				datatype:"jsonp",
+				jsonp:"callback",
+				success:function(data){
+					var obj = eval("("+data+")");
+					if(obj!=null){
+						alert("注册成功,会跳转到首页");
+						window.location.href ='home.jsp';
+					}else{
+						window.location.href ='zcdz.html';
+					}
+				},error:function(data){//错误，返回回来的错误数据
+					alert("注册失败，请重新注册");
+				}
+			});
+		})
+	})
+}
+}
+</script>
+<body class="body" style="background:url('img/bg1.jpg');">
+	<iframe src="dingtou.jsp" style="display:block;width:1520px;z-index:5000;position:fixed;top:0;height:182px;border: 0px"></iframe>
+	<div class="wai">
+		<div style="margin-left:260px;margin-top:30px;">
+			<a href="#" style="font-size:30px;font-weight:bold;color:blue;">申请&nbsp;&nbsp;加盟</a>
+			<hr style="width:135px;height:2px;background-color:Gold;" >
+		</div>
+	<div class="jia">
+		<form id="form">
+			<table class="zcdz">
+				<tr>
+					<td colspan="2">您的名称:<input id="username" type="text" name="username" placeholder="请输入您的账号名称" required="required" /></td>
+				</tr>
+				<tr>
+					<td colspan="2">店铺店名:<input id="shopname" type="text" name="shopname" placeholder="请输入你想要的店铺名称" required="required" /></td>
+				</tr>
+				<tr>
+					<td colspan="2">店铺位置:<input id="shopspace" type="text" name="shopspace" placeholder="请输入省/市/区" required="required" ></td>
+				</tr>
+				<tr>
+					<td colspan="2">店铺电话:<input id="telephone" type="text" name="telephone" placeholder="请输入11位的电话号码" required="required" ></td>
+				</tr>
+				<tr>
+					<td colspan="2">营业时间:
+					<select name="shophours">
+						<option value="1">8:00-20:00</option>
+						<option value="2">8:30-19:00</option>
+						<option value="3">9:00-21:00</option>
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">您的邮箱:<input id="email" type="text" name="email" ></td>
+				</tr>
+				<tr>
+					<td colspan="2">店铺面积:<select name="shoparea">
+						<option value="1">600平方</option>
+						<option value="2">800平方</option>
+						<option value="3">1000平方</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="button" class="but1" onclick="return Check();" style="background-color:CornflowerBlue;" value="店铺注册" id="zcdz" >
+						<input type="reset" value="重置" style="background-color:CornflowerBlue;" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>店铺信息</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="http://unpkg.com/element-ui@2.4.9/lib/index.js"></script>
+<script type="text/javascript" src="js/coashjs.js"></script>
+<link rel="stylesheet" href="css/coachcss.css" type="text/css">
+<script>
+
+	
+$(function () {	
+	
+	/* export default {	 
+		 var selectuser;
+		 $.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/saxselectdz",
+				type : "GET",
+				datatype:"jsonp",
+				jsonp:"callback",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					alert(data);
+					selectuser=JSON.parse(data);										
+				}
+			});
+		
+		 data()  {
+		        tableData5: selectuser
+	      }
+	 } */
+	
+	
+	
+	
+	  function jiazai() {
+		
+		var coachdata;
+		 $.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/saxselectdz",
+				type : "post",
+				datatype:"jsonp",
+				jsonp:"callback",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					coachdata=JSON.parse(data);										
+				}
+			});
+		
+		var Main = {
+				 methods: {
+				      handleClick(row) {
+				    	  $(location).attr('href',
+									"coachuser.html?uid="+row.userid);
+				        //$("#xiugairo").find("input").val();
+				      }
+				    },
+			    data() {
+			      return {	    	
+			    	  tableData5: coachdata	
+			      }
+			    }
+			  };
+			var Ctor = Vue.extend(Main);
+			new Ctor().$mount('#app');	
+	}
+	jiazai();	 
+	/* function xiala() {
+		var xiala;
+		 $.ajax({
+				async : false,
+				url : "saxselectroles",
+				type : "GET",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					alert(data);
+					xiala=JSON.parse(data);					
+				}
+			});
+		var Main = {
+			    data() {
+			      return { options2:xiala,
+			          value2:'' };
+			    }
+			  }
+			var Ctor = Vue.extend(Main)
+			new Ctor().$mount('#app1')
+	} */
+	/* $("#tijiao").click(function () {
+		alert($("#app1 input").val());
+		$($("#xiugairo").find("p")[1]).find("span").html();
+		   $.ajax({
+			async : false,
+			url : "saxupdateru",
+			data:{'userid':$($("#xiugairo").find("p")[0]).find("span").html(),
+				'rolename':$($("#xiugairo").find("p")[2]).find("span").html(),
+				'xiugai':$("#app1 input").val()},
+			type : "GET",
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			success : function(data) {
+				alert(data);
+				xiala=JSON.parse(data);					
+			}
+		}); 
+	}) */
+})
+	</script>
+	
+	
+	<style type="text/css">
+	#zhezhao{
+	display: none; 
+	background-color: #000;
+	opacity: 0.7;
+	z-index: 4;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	}
+	#xiugairo{
+	display: none; 
+	background-color: #eeeeee;
+	z-index: 5;
+	position: fixed;
+	top: 20%;
+	left: 30%;
+	width:600px;
+	height: 400px;
+	margin: auto;
+	line-height: 40px;
+	border-radius: 80px;
+	overflow: hidden;
+	}
+	#xiugairo p{
+	background-color:#ffffff;
+	border-bottom-color: #000;
+	
+	}
+	.demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+	/* #app1{
+	width:200px;
+	height: 100px;
+	} */
+	</style>
+</head>
+<body>
+<div id="app">
+		<el-container style="height: 535px; border: 1px solid #eee">
+		<el-container>
+		    <el-header style="text-align: right; font-size: 12px">
+		      <el-dropdown>
+		        <i class="el-icon-setting" style="margin-right: 15px"></i>
+		        <el-dropdown-menu slot="dropdown">
+		          <el-dropdown-item id="querycoach">查看</el-dropdown-item>
+		          <el-dropdown-item id="addcoach">新增</el-dropdown-item>
+		          <!-- <el-dropdown-item>删除</el-dropdown-item> -->
+		        </el-dropdown-menu>
+		      </el-dropdown>
+		      <span>用户管理</span>
+		    </el-header>
+		
+<template>
+  <el-table
+    :data="tableData5"
+    style="width: 100%"
+    max-height="450">
+    <el-table-column type="expand">
+      <template slot-scope="props">
+        <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="用户id">
+            <span>{{ props.row.userid }}</span>
+          </el-form-item>
+          <el-form-item label="姓名">
+            <span>{{ props.row.username }}</span>
+          </el-form-item>          
+          <el-form-item label="性别">
+            <span>{{ props.row.sex }}</span>
+          </el-form-item>
+          <el-form-item label="电话">
+            <span>{{ props.row.phone }}</span>
+          </el-form-item>
+          <el-form-item label="体重">
+            <span>{{ props.row.weight }}</span>
+          </el-form-item>
+          <el-form-item label="身高">
+            <span>{{ props.row.height }}</span>
+          </el-form-item>
+          <el-form-item label="生日">
+            <span>{{ props.row.birthday }}</span>
+          </el-form-item>
+           <el-form-item label="注册时间">
+            <span>{{ props.row.regdate }}</span>
+          </el-form-item>
+           <el-form-item label="简介">
+            <span>{{ props.row.remarks }}</span>
+          </el-form-item>         
+        </el-form>
+      </template>
+    </el-table-column>
+    <el-table-column  fixed prop="shopid" label="店铺id" width="140"> </el-table-column> 
+	   <el-table-column prop="shoppicture" label="图片" width="140">
+		   <template slot-scope="scope">
+		      <img :src="scope.row.shoppicture" alt="" style="width: 50px;height: 50px">
+		    </template>
+	    </el-table-column> 			 		
+		<el-table-column prop="shopname" label="店铺名" width="120"> </el-table-column> 
+		<el-table-column prop="shopspace" label="店铺位置"> </el-table-column> 
+		<el-table-column prop="telephone" label="电话"> </el-table-column>
+		<el-table-column prop="shophours" label="营业时间"> </el-table-column>
+		<el-table-column prop="shoparea" label="面积"> </el-table-column>
+		<el-table-column prop="template" label="使用模板"> </el-table-column>
+		<el-table-column fixed="right" label="操作" width="100">
+		      <template slot-scope="scope">
+		        <el-button @click="handleClick(scope.row)" type="text" size="20px">查看</el-button>
+		       </template>
+	    </el-table-column>					
+				
+  </el-table>
+</template>
+			
+			</el-container>
+		</el-container>
+
+	
+	</div>
+	
+	<div id="zhezhao" style=""></div>
+	<div id="xiugairo" style="">
+	<p style="text-align: center;">用户序号:<span></span></p>
+	<p style="text-align: center;">用户名称:<span></span></p>
+	<p style="text-align: center;">当前角色:<span></span></p>
+	<p style="text-align: center;">用户角色请选择</p>
+		<div id="app1" style="width: 200px;margin: auto;height: 60px;">
+			<template>
+			  <el-select v-model="value2" placeholder="请选择">
+			    <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+			    </el-option>
+			  </el-select>
+			</template>
+		</div>
+		<input id="tijiao" style="width: 100px;height: 40px;text-align: center;background-color: #eeeeee;margin-top: 10px;margin: auto;display: block;" type="button" value="确定">
+	</div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>客服</title>
+　　　　　　<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
+    　　　　　　<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <link rel="stylesheet" type="text/css" href="css/kf.css"/>
+    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+    
+</head>
+<body style="width:1300;height:1000px;background:url('img/0.jpg');background-size: cover;" >
+<div class="div">
+		<div class="top">
+		<span style="color: white;margin-left: 30%; background-color: ">嘉乐健身俱乐部客服服务中心   </span>
+		</div>
+		 <div class="one2">
+				<div class="yh">
+					<p style="text-align: center; ">小八</p>
+				</div>
+			 <div id="time" style="text-align:center;"></div>
+		     <p id="message" style="text-align: left;"></p>
+		     <p id="message2" style="text-align: right;"></p>
+		</div> 
+		 <div class="cen">
+				<input type="text" id="text" placeholder="请输入.."/>
+				<button onclick="send()" class="fs">发送消息</button> 
+		</div>	
+	</div>  
+</body>
+
+<script type="text/javascript">
+    var websocket = null;
+    //判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+        websocket = new WebSocket("ws://127.0.0.1:8188/Projecthou/websocket");
+    }
+    else {
+        alert('当前浏览器 Not support websocket')
+    }
+    
+    //连接发生错误的回调方法
+    websocket.onerror = function () {
+        setMessageInnerHTML("WebSocket连接发生错误");
+    };
+
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        setMessageInnerHTML("连接成功");
+    }
+    
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+        if(event.data.indexOf("客服") != -1){
+          setMessageInnerHTML(event.data);
+        }
+        else
+       	 {
+          setMessageInnerHTML2(event.data);
+       	 }
+    }
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        setMessageInnerHTML("WebSocket连接关闭");
+    }
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+    }
+
+  //将消息显示在网页上
+    function setMessageInnerHTML(innerHTML) {
+        document.getElementById('message').innerHTML += innerHTML + '<br/>';
+    }
+
+    //将消息显示在网页上
+    function setMessageInnerHTML2(innerHTML) {
+        document.getElementById('message2').innerHTML += innerHTML + '<br/>';
+    }
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    function getUrlParam(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg); //匹配目标参数
+		if (r != null)
+			return unescape(r[2]);
+		    return null; //返回参数值
+	}
+    var username=decodeURIComponent(getUrlParam("username"));
+    //发送消息
+    function send() {
+    	 var message = document.getElementById('text').value;
+         var today=new Date();
+         Year=today.getFullYear();
+         Month=today.getMonth()+1;
+         Day=today.getDate();
+         Hours=today.getHours();
+         Minutes=today.getMinutes();
+         Seconds=today.getSeconds();
+         if(Hours<10)
+        	{
+        	 Hours="0"+today.getHours();
+        	}
+         if(Minutes<10)
+        	{
+          Minutes="0"+today.getMinutes();
+        	}
+         if(Seconds<10)
+        	{
+          Seconds="0"+today.getSeconds();
+        	}
+         var sj=document.getElementById("time").innerHTML=Year+"/"+Month+"/"+Day;
+         websocket.send(Hours+":"+Minutes+":"+Seconds+'<br/>'+username+"客服:"+message);
+         document.getElementById('text').value="";
+    }
+</script>
+</html>

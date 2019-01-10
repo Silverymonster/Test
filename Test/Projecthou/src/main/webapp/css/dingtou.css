@@ -1,0 +1,71 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+#body {
+	height:2900px;
+	width:1520px;
+}
+a{
+	color:#FFFFFF;
+	font-size:15px;
+	text-decoration:none;
+}
+a:hover{
+	color:DeepSkyBlue;
+	text-decoration: none;
+}
+header {
+	opacity:0.7;
+	width:1520px;
+	height:61px;
+	background-color:Black;
+	position:absolute;
+	z-index:5000;
+}
+div{
+	
+	float: left;
+}
+.ul1{
+	margin-top:5px;
+	list-style:none;
+	opacity:1.5;
+	float:left;
+}
+.sousuo {
+	float: left;
+	width: 530px;
+	margin-left:80px;
+	margin-top: .8em;
+}
+.sousuo input[type="text"] {
+	outline: none;
+	border: none;
+	background: #EFEFEF;
+	padding: 10px;
+	text-align: center;
+	font-size: 14px;
+	color: #999;
+	width: 50%;
+	float: left;
+	border-top-left-radius: 25px;
+	border-bottom-left-radius: 25px;
+}
+.sousuo input[type="submit"] {
+	outline: none;
+	border: none;
+	background: #212121;
+	padding: 9px 0;
+	font-size: 14px;
+	color: #fff;
+	width: 22%;
+	border-top-right-radius: 30px;
+	border-bottom-right-radius: 30px;
+}
+#divbody {
+	margin: auto;
+	width: 100%;
+	/* height: 150%; */
+	/* border: 1px solid black; */
+}

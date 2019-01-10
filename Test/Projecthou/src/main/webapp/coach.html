@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="http://unpkg.com/element-ui@2.4.9/lib/index.js"></script>
+<script type="text/javascript" src="js/coashjs.js"></script>
+<link rel="stylesheet" href="css/coachcss.css" type="text/css">
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/javascript">
+$(function () {	
+	var coachdata;
+	 $.ajax({
+			async : false,
+			url : "http://172.20.10.11:8088/JiaLe/saxselectcoach?page=1&limit=5",
+			type : "post",
+			datatype:"jsonp",
+			jsonp:"callback",
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			success : function(data) {
+				coachdata=JSON.parse(data);					
+			}
+	 });
+	 var total;
+	 $.ajax({
+			async : false,
+			url : "http://172.20.10.11:8088/JiaLe/saxselectsumscach",
+			type : "post",
+			datatype:"jsonp",
+			jsonp:"callback",
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			success : function(data) {
+				var obj=JSON.parse(data);
+				total=obj[0].total;
+				//coachdata=JSON.parse(data);					
+			}
+	 });
+	 var fenyeval;
+	 function fenye(val) {
+		 $.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/saxselectcoach?page="+val+"&limit=5",
+				type : "post",
+				datatype:"jsonp",
+				jsonp:"callback",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					coachdata=JSON.parse(data);	
+				}
+		 }); 
+	}
+	function jiazai() {
+		 var Main = {
+					methods: {	
+					      handleSizeChange(val) {
+					    	  $.ajax({
+									async : false,
+									url : "http://172.20.10.11:8088/JiaLe/saxselectcoach?page=1&limit="+val,
+									type : "post",
+									datatype:"jsonp",
+									jsonp:"callback",
+									contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+									success : function(data) {
+										coachdata=JSON.parse(data);
+									}
+							 });
+					    	  this.tableData=coachdata;
+					      },
+					      handleCurrentChange(val) {
+					    	  fenyeval=val
+					    	  fenye(fenyeval);
+							 this.tableData=coachdata;
+							 this.currentPage = val;
+					      },
+				   
+						shanchu(row) {
+							 $.ajax({
+									async : false,
+									url : "http://172.20.10.11:8088/JiaLe/saxdeleteusername?userid="+row.userid,
+									type : "post",
+									datatype:"jsonp",
+									jsonp:"callback",
+									contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+									success : function(data) {
+										coachdata=JSON.parse(data);	
+										 fenye(fenyeval);
+									}
+							 }); 
+					      },
+					      chakan(row){
+					    	   $(location).attr('href',
+										"comments.html?uid="+row.userid); 
+					      }
+					    },
+				    data() {
+				      return {	  				    	  
+				    	 tableData:coachdata,
+				    	 currentPage4: 1,
+				    	 total:total
+				      }
+				    }
+				  };
+				var Ctor = Vue.extend(Main);
+				new Ctor().$mount('#app');	
+		}		
+	jiazai();	
+	$("#upload").click(function () {
+	   var form = new FormData(document.getElementById("tf"));
+	     $.ajax({
+	    	 datatype:"jsonp",
+			 jsonp:"callback",
+		     url:"http://172.20.10.11:8088/JiaLe/excelin",
+		     type:"post",
+		     data:form,
+		     async : false,
+		     processData:false,
+		     contentType:false,
+		     success:function(data){
+		      //window.clearInterval(timer);   
+		     },
+		     error: function (XMLHttpRequest, textStatus, errorThrown) {
+		               alert(XMLHttpRequest.status);
+		               alert(XMLHttpRequest.readyState);
+		           alert(textStatus);
+		       }
+	    });
+		 
+	})
+})
+	</script>
+
+<style type="text/css">
+	#zhezhao{
+	display: none; 
+	background-color: #000;
+	opacity: 0.7;
+	z-index: 4;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	}
+	#xiugairo{
+	display: none; 
+	background-color: #eeeeee;
+	z-index: 5;
+	position: fixed;
+	top: 20%;
+	left: 30%;
+	width:600px;
+	height: 400px;
+	margin: auto;
+	line-height: 40px;
+	border-radius: 80px;
+	overflow: hidden;
+	}
+	#xiugairo p{
+	background-color:#ffffff;
+	border-bottom-color: #000;
+	
+	}
+
+	</style>
+
+</head>
+<body>
+	<div id="app">
+		<el-container style="height: 520px; border: 1px solid #eee">
+		<el-container>
+		    <el-header style="text-align: right; font-size: 12px">
+		      <el-dropdown>
+		        <i class="el-icon-setting" style="margin-right: 15px"></i>
+		        <el-dropdown-menu slot="dropdown">
+		          <el-dropdown-item id="querycoach">查看所有</el-dropdown-item>
+		          <el-dropdown-item id="daochu"><a href="http://172.20.10.11:8088/JiaLe/excelout">导出</a></el-dropdown-item>
+		          <el-dropdown-item id="daoru">导入</el-dropdown-item>
+		          <!-- <el-dropdown-item>删除</el-dropdown-item> -->
+		        </el-dropdown-menu>
+		      </el-dropdown>
+		      
+		      <span>教练管理</span>
+		    </el-header>
+		<!-- <el-aside width="200px" style="background-color: rgb(238, 241, 246)"> -->
+			<el-main>
+				 <el-table :data="tableData" max-height="425"> 
+						<el-table-column fixed prop="userid" label="教练id" width="140"> </el-table-column> 
+						<el-table-column prop="userpicture" label="头像" width="140"> 
+							<template slot-scope="scope">
+						      <img  :src="scope.row.userpicture" alt="" style="width: 50px;height: 50px">
+						    </template>  
+						</el-table-column> 		
+						<el-table-column prop="username" label="姓名" width="100"> </el-table-column> 	
+						<el-table-column prop="sex" label="性别" width="100"> </el-table-column> 
+						<el-table-column prop="phone" label="电话" width="150"> </el-table-column> 
+				        <el-table-column prop="weight" label="体重" width="100"> </el-table-column> 
+						<el-table-column prop="height" label="身高" width="100"> </el-table-column>    
+						<el-table-column prop="birthday" label="生日" width="150"> </el-table-column>
+						<el-table-column prop="regdate"  sortable label="注册时间" width="150"> </el-table-column>
+						<el-table-column prop="remarks" label="简介" width="160"> </el-table-column>
+				        <el-table-column prop="state" label="状态" width="160"> </el-table-column>
+				        <el-table-column fixed="right" label="操作" width="150">
+						   <template slot-scope="scope">			
+						      <el-button @click="shanchu(scope.row)" type="text" size="small">删除</el-button>						     			      
+						      <el-button @click="chakan(scope.row)" type="text" size="small">查看评论</el-button>
+						   </template>
+					    </el-table-column>	
+					   
+				</el-table> 
+			</el-main>
+			</el-container>
+		</el-container>	
+		 <template>
+					    <el-pagination @size-change="handleSizeChange" 
+					    @current-change="handleCurrentChange" 
+					    :current-page="currentPage4" 
+					    :page-sizes="[5, 10, 20, 30]" 
+					    :page-size="5" 
+					    layout="total, sizes, prev, pager, next, jumper" 
+					    :total="total">
+    					</el-pagination>	
+    					</template>
+
+	</div>
+	 <form id="tf" style="width: ">
+     <p>
+     <input type="file" name="file" value="选择文件"/>
+    Excel文件上传：<input type="button" name="Upload" id="upload" value="upload"/>
+   </p>
+</form>
+	<div id="zhezhao" style=""></div>
+	<div id="xiugairo" style="">
+	<p style="text-align: center;">用户序号:<span></span></p>
+	<p style="text-align: center;">用户名称:<span></span></p>
+	<p style="text-align: center;">当前角色:<span></span></p>
+	<p style="text-align: center;">用户                                                                                                          请选择</p>
+		<div id="app1" style="width: 200px;margin: auto;height: 60px;">
+			<template>
+			  <el-select v-model="value2" placeholder="请选择">
+			    <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+			    </el-option>
+			  </el-select>
+			</template>
+		</div>
+		<input id="tijiao" style="width: 100px;height: 40px;text-align: center;background-color: #eeeeee;margin-top: 10px;margin: auto;display: block;" type="button" value="确定">
+	</div>
+</body>
+</html>

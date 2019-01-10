@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sax.jiale.mapper">
+	<!-- 后台登录 -->
+	<select id="login" parameterType="map" resultType="map">
+		SELECT * FROM userinfo
+		JOIN userrole ON userinfo.`userid`=userrole.`userid`
+		JOIN roleinfo ON roleinfo.`roleid`=userrole.`roleid`
+		<if test="username != null">
+		WHERE userinfo.`username`=#{username}
+		</if>
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="liebiao" parameterType="map" resultType="map">
+		SELECT
+		DISTINCT firstmenu.`firstmenuname` name,firstmenu.`firstmenuid` id,0
+		pid,0 url FROM userinfo INNER JOIN userrole ON
+		userinfo.userid=userrole.userid
+		INNER JOIN roleinfo ON
+		userrole.roleid=roleinfo.roleid
+		INNER JOIN rolefirst ON
+		rolefirst.`roleid`=roleinfo.rid
+		INNER JOIN firstmenu ON
+		rolefirst.`firstid`=firstmenu.`firstmenuid`
+		INNER JOIN firsttwo ON
+		firstmenu.`firstmenuid`=firsttwo.`firstid`
+		WHERE
+		userinfo.username=#{username} AND roleinfo.rolename LIKE '%店长'
+		UNION
+		ALL
+		SELECT DISTINCT twomenu.`twomenuname` name, '-1'
+		id,firsttwo.`firstid` pid ,twomenu.twomenuurl url FROM userinfo INNER
+		JOIN userrole ON userinfo.userid=userrole.userid
+		INNER JOIN roleinfo ON
+		userrole.roleid=roleinfo.roleid
+		INNER JOIN rolefirst ON
+		rolefirst.`roleid`=roleinfo.rid
+		INNER JOIN firstmenu ON
+		rolefirst.`firstid`=firstmenu.`firstmenuid`
+		INNER JOIN firsttwo ON
+		firstmenu.`firstmenuid`=firsttwo.`firstid`
+		INNER JOIN twomenu ON
+		firsttwo.`twoid`=twomenu.twomenuid
+		WHERE userinfo.username=#{username}
+		AND roleinfo.rolename LIKE '%店长'
+	</select>
+
+	<!-- 查询教练 -->
+	<select id="selectcoach" resultType="map" parameterType="map">
+		SELECT *
+		FROM (SELECT userid fid FROM userinfo WHERE
+		username=#{username}) a
+		INNER JOIN userinfo ON a.fid=userinfo.uid
+		INNER
+		JOIN userrole ON
+		userinfo.userid=userrole.userid
+		INNER JOIN roleinfo ON
+		userrole.roleid=roleinfo.roleid
+		WHERE roleinfo.rolename='教练' limit
+		${page},${limit}
+	</select>
+
+	<!-- 查询用户 -->
+	<select id="selectuser" resultType="map" parameterType="map">
+		SELECT *
+		FROM
+		(SELECT userinfo.userid,userpicture,
+		userinfo.username
+		zi,phone,sex,weight,height,roleinfo.rolename
+		rolename,birthday,regdate,remarks,userinfo.uid , state
+		FROM userinfo
+		INNER JOIN
+		userrole ON userinfo.userid=userrole.userid
+		INNER JOIN
+		roleinfo ON
+		userrole.roleid=roleinfo.roleid
+		WHERE roleinfo.rolename LIKE
+		'用户' ) a
+		,userinfo b WHERE b.userid=a.uid ;
+	</select>
+
+	<!-- 查询角色 -->
+	<select id="selectroles" resultType="map" parameterType="map">
+		SELECT
+		rolename label,roleid value FROM roleinfo
+	</select>
+
+	<!-- 查询所有店铺 -->
+	<select id="selectshop" resultType="map" parameterType="map">
+		SELECT *
+		FROM shop
+	</select>
+
+	<!-- 查询器材表 -->
+	<select id="selectequipment" resultType="map"
+		parameterType="map">
+		SELECT * FROM equipment
+	</select>
+
+	<!-- 根据用户名查询所有店铺 -->
+	<select id="selectnameshop" resultType="map" parameterType="map">
+		SELECT u.username,s.shopname FROM userinfo u,shoprole ss,shop s
+		WHERE
+		u.userid=ss.userid AND s.sid=ss.sid
+	</select>
+
+	<!-- 根据登录名查询所对应的店铺 -->
+	<select id="selectloginshop" resultType="map"
+		parameterType="map">
+		SELECT userinfo.`username`,shop.`shopname` FROM userinfo
+		JOIN shoprole ON userinfo.`userid` = shoprole.`userid`
+		JOIN shop ON
+		shop.`sid` = shoprole.`sid`
+		WHERE username = #{username}
+	</select>
+
+	<!-- 查询性能日志 -->
+	<select id="selectperformancelog" resultType="map"
+		parameterType="map">
+		SELECT * FROM performancelog
+	</select>
+
+	<!-- 查询操作日志 -->
+	<select id="selectoperationlog" resultType="map"
+		parameterType="map">
+		SELECT * FROM operationlog
+	</select>
+
+	<!-- 查询报错日志 -->
+	<select id="selecterrorlog" resultType="map" parameterType="map">
+		SELECT * FROM errorlog
+	</select>
+
+	<!-- 修改角色 -->
+	<update id="saxupdaterole">
+		UPDATE userrole SET roleid=(SELECT roleid FROM
+		roleinfo WHERE rolename=#{xiugai})
+		WHERE userid=#{userid} AND
+		roleid=(SELECT roleid FROM roleinfo WHERE
+		rolename=#{rolename})
+	</update>
+
+	<!-- 根据用户名查询本店铺的信息 -->
+	<select id="saxselectshop" resultType="map" parameterType="map">
+		SELECT shop.shopid,shop.sid,shop.shoppicture,shop.shopname,shop.shopspace
+		,shop.telephone,shop.shophours,shop.shoparea,shop.template FROM
+		userinfo
+		JOIN userrole ON userinfo.userid = userrole.userid
+		JOIN
+		shoprole ON
+		shoprole.userid = userinfo.userid
+		JOIN shop ON shoprole.sid
+		= shop.sid
+		WHERE username = #{username}
+	</select>
+
+	<!-- 根据用户名查询用户的信息 -->
+	<select id="saxselectuser" resultType="map" parameterType="map">
+		SELECT * FROM userinfo WHERE username = #{username}
+	</select>
+
+	<!-- 根据店长查询店铺下教练的个数 -->
+	<select id="saxselectshopjl" resultType="map"
+		parameterType="map">
+		SELECT u2.username,s.shopname,ri.rolename FROM userinfo
+		u1
+		JOIN userinfo u2 ON u1.userid=u2.uid
+		JOIN shoprole sr ON
+		sr.userid=u1.userid
+		JOIN shop s ON s.sid=sr.sid
+		JOIN userrole ur ON
+		ur.userid=u2.userid
+		JOIN roleinfo ri ON ri.roleid=ur.roleid
+		WHERE
+		ri.rolename='教练' AND u1.username = #{username}
+	</select>
+
+	<!-- 根据店长查询店铺下用户的个数 -->
+	<select id="saxselectshopyh" resultType="map"
+		parameterType="map">
+		SELECT u3.username,s.shopname,ri.rolename FROM userinfo
+		u1
+		JOIN userinfo u2 ON u1.userid=u2.uid
+		JOIN userinfo u3 ON
+		u2.userid=u3.uid
+		JOIN shoprole sr ON sr.userid=u1.userid
+		JOIN shop s ON
+		s.sid=sr.sid
+		JOIN userrole ur ON ur.userid=u3.userid
+		JOIN roleinfo ri ON
+		ri.roleid=ur.roleid
+		WHERE ri.rolename='用户' AND u1.username =
+		#{username}
+	</select>
+
+	<!-- 添加器材的信息 -->
+	<insert id="saxinsertequipment" parameterType="map">
+		INSERT INTO
+		equipment(equipmentname,equipmentpicture,equipmentcontent,shopid)
+		VALUES
+		(#{equipmentname},#{equipmentpicture},#{equipmentcontent},#{shopid});
+	</insert>
+	
+	<!-- 根据用户名查询shopid -->
+	<select id="saxselectusernameshopid" resultType="map" parameterType="map">
+		SELECT shop.`shopid` FROM userinfo
+		JOIN userrole ON userinfo.`userid` = userrole.`userid`
+		JOIN shoprole ON userinfo.`userid` = shoprole.`userid`
+		JOIN shop ON shop.`sid` = shoprole.`sid`
+		WHERE userinfo.`username` = #{username}
+	</select>
+	
+
+	<!-- 删除评论 -->
+	<delete id="saxdeletecomments" parameterType="map">
+		DELETE FROM
+		comments WHERE commid = #{commid}
+	</delete>
+
+	<!-- 根据用户名修改uid -->
+	<update id="saxupdateuid" parameterType="map">
+		UPDATE userinfo SET uid
+		= #{uid}
+		WHERE userid = #{userid}
+	</update>
+
+	<!-- 根据用户id查询用户信息 -->
+	<select id="saxuserinfoone" resultType="map" parameterType="map">
+		SELECT userid FROM userinfo a WHERE username=#{username}
+	</select>
+
+	<!-- 删除教练 -->
+	<delete id="saxdeleteusername" parameterType="map">
+		UPDATE userinfo SET
+		state=0 WHERE userid=#{userid}
+	</delete>
+
+	<!-- 删除器材 -->
+	<delete id="saxdeletequipment" parameterType="map">
+		DELETE FROM
+		equipment WHERE equipmentid = #{equipmentid}
+	</delete>
+
+	<!-- 查询总店长的下一级... -->
+	<select id="saxselectusernamex" resultType="map" parameterType="map">
+		SELECT * FROM roleinfo
+		WHERE rid > roleid AND rid >
+		#{rid}
+	</select>
+	
+	<!-- 查询店长 -->
+	<select id="selectdz" resultType="map" parameterType="map">
+		SELECT *
+		FROM shop , userinfo 
+		WHERE shop.`sid`=userinfo.userid
+	</select>
+
+	<!-- 查询教练总个数... -->
+	<select id="sumcoach" resultType="map" parameterType="map">
+		SELECT
+		COUNT(*) total FROM (SELECT userid fid, username FROM userinfo WHERE
+		username=#{username}) a
+		INNER JOIN userinfo ON a.fid=userinfo.uid
+		INNER
+		JOIN userrole
+		ON
+		userinfo.userid=userrole.userid
+		INNER JOIN roleinfo ON
+		userrole.roleid=roleinfo.roleid
+		WHERE
+		roleinfo.rolename='教练'
+	</select>
+	
+	<!-- 查询所有用户 -->
+	<select id="saxselectuserinfo" resultType="map"
+		parameterType="map">
+		SELECT *
+		FROM (SELECT userid fid FROM userinfo WHERE
+		username=#{username}) a
+		INNER JOIN userinfo ON a.fid=userinfo.uid
+		INNER
+		JOIN userrole ON userinfo.userid=userrole.userid
+		INNER JOIN roleinfo ON
+		userrole.roleid=roleinfo.roleid
+		WHERE roleinfo.rolename='教练'
+	</select>
+
+	<!-- excle导入导出 -->
+	<insert id="exclein" parameterType="map">
+		INSERT INTO
+		userinfo(userid,uid,userpicture,username,saltvalue,encryption,phone,sex,weight,height,birthday,regdate,remarks,state)
+		VALUES(#{userid},#{uid},#{userpicture},#{username},#{saltvalue},#{encryption},#{phone},#{sex},#{weight},#{height},#{birthday},#{regdate},#{remarks},#{state})
+		ON DUPLICATE KEY UPDATE
+		uid=#{uid},userpicture=#{userpicture},username=#{username},saltvalue=#{saltvalue},encryption=#{encryption},phone=#{phone},sex=#{sex},weight=#{weight},height=#{height},birthday=#{birthday},regdate=#{regdate},remarks=#{remarks},state=#{state};
+	</insert>
+
+	<!-- 修改个人信息 -->
+	<update id="saxupdatemyinfo" parameterType="map">
+		UPDATE userinfo SET
+		username=#{username},
+		phone=#{phone},sex=#{sex},weight=#{weight},height=#{height},
+		birthday=#{birthday},regdate=#{regdate},remarks=#{remarks}
+		WHERE
+		userid=#{userid}
+	</update>
+	
+	<!-- 修改店铺的信息 -->
+	<update id="saxupdateshopinfo" parameterType="map">
+		UPDATE shop SET 
+		shopname=#{shopname},
+		shopspace=#{shopspace},
+		telephone=#{telephone},
+		shophours=#{shophours},
+		shoparea=#{shoparea},
+		template=#{template},
+		email=#{email}
+		WHERE shopid=#{shopid}
+	</update>
+	
+	<!-- 修改店铺图片的信息 -->
+	<update id="saxupdateshoppictureinfo" parameterType="map">
+			UPDATE shop SET shoppicture=#{shoppicture}
+			WHERE shopid=#{shopid}
+	</update>
+	
+	<!-- 查询所有店铺的轮播 -->
+	<select id="saxselectshoplb" resultType="map" parameterType="map">
+			SELECT * FROM pictureinfo WHERE pid=#{pid}
+	</select>
+	<!-- 查询所有店铺的轮播 -->
+	<select id="saxselectuserinfouserid" resultType="map" parameterType="map">
+			SELECT userid FROM userinfo WHERE username=#{username}
+	</select>
+	<!-- 添加店铺轮播图 -->
+	<insert id="saxinsertshoplb" parameterType="map">
+		INSERT INTO pictureinfo(picture,shopid) VALUES(#{picture},#{shopid})
+	</insert>
+	
+</mapper>
+
+  

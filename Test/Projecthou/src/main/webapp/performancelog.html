@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="http://unpkg.com/element-ui@2.4.9/lib/index.js"></script>
+<script type="text/javascript" src="js/coashjs.js"></script>
+<link rel="stylesheet" href="css/coachcss.css" type="text/css">
+<script type="text/javascript">
+$(function () {		
+	 function jiazai() {
+		
+		var coachdata;
+		 $.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/selectperformancelog",
+				type : "post",
+				datatype:"jsonp",
+				jsonp:"callback",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					
+					coachdata=JSON.parse(data);					
+				}
+				
+			});
+		var Main = {
+				 methods: {
+				      handleClick(row) {
+				    	   $("#zhezhao").show();
+				    	$("#xiugairo").show(1000);
+				        $($("#xiugairo").find("p")[0]).find("span").html(row.userid);
+				        $($("#xiugairo").find("p")[1]).find("span").html(row.username);
+				        $($("#xiugairo").find("p")[2]).find("span").html(row.rolename);       
+				        xiala();
+				        //$("#xiugairo").find("input").val();
+				      }
+				    },
+			    data() {
+			      return {	    	
+			    	 tableData:coachdata	    		
+			      }
+			    }
+			  };
+			var Ctor = Vue.extend(Main);
+			new Ctor().$mount('#app');	
+	}
+	jiazai();	
+	/* function xiala() {
+		var xiala;
+		 $.ajax({
+				async : false,
+				url : "saxselectroles",
+				type : "GET",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					alert(data);
+					xiala=JSON.parse(data);					
+				}
+			});
+		var Main = {
+			    data() {
+			      return { options2:xiala,
+			          value2:'' };
+			    }
+			  }
+			var Ctor = Vue.extend(Main)
+			new Ctor().$mount('#app1')
+	} */
+	/* $("#tijiao").click(function () {
+		alert($("#app1 input").val());
+		$($("#xiugairo").find("p")[1]).find("span").html();
+		   $.ajax({
+			async : false,
+			url : "saxupdateru",
+			data:{'userid':$($("#xiugairo").find("p")[0]).find("span").html(),
+				'rolename':$($("#xiugairo").find("p")[2]).find("span").html(),
+				'xiugai':$("#app1 input").val()},
+			type : "GET",
+			contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+			success : function(data) {
+				alert(data);
+				xiala=JSON.parse(data);					
+			}
+		}); 
+	}) */
+})
+	</script>
+	
+<title>日志</title>
+</head>
+<body>
+<div id="app">
+		<el-container style="height: 535px; border: 1px solid #eee">
+		<el-container>
+		    <el-header style="text-align: right; font-size: 12px">
+		      <el-dropdown>
+		        <i class="el-icon-setting" style="margin-right: 15px"></i>
+		        <el-dropdown-menu slot="dropdown">
+		          <el-dropdown-item id="querycoach">查看</el-dropdown-item>
+		          <el-dropdown-item id="addcoach">新增</el-dropdown-item>
+		          <!-- <el-dropdown-item>删除</el-dropdown-item> -->
+		        </el-dropdown-menu>
+		      </el-dropdown>
+		      <span>性能日志管理</span>
+		    </el-header>
+		<!-- <el-aside width="200px" style="background-color: rgb(238, 241, 246)"> -->
+			<el-main>
+				 <el-table :data="tableData" max-height="450"> 
+						<el-table-column prop="performanceid" label="性能id"> </el-table-column> 
+						<el-table-column prop="performancename" label="访问方法"> </el-table-column> 		
+						<el-table-column prop="performancestar" label="开始时间" > </el-table-column> 
+						<el-table-column prop="performancestop" label="结束时间"> </el-table-column> 
+						<!-- <el-table-column prop="phone" label="电话"> </el-table-column> 
+				        <el-table-column prop="weight" label="体重"> </el-table-column> 
+						<el-table-column prop="height" label="身高"> </el-table-column>    
+				        <el-table-column prop="xiugai" label="修改"> </el-table-column> 
+						<el-table-column prop="shanchu" label="删除"> </el-table-column> -->    						
+				</el-table> 
+			</el-main>
+			</el-container>
+		</el-container>
+	
+	</div>
+</body>
+</html>

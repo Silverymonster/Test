@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>个人</title>
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="js/vue.min.js"></script>
+<script type="text/javascript" src="http://unpkg.com/element-ui@2.4.9/lib/index.js"></script>
+<script type="text/javascript" src="js/coashjs.js"></script>
+<script type="text/javascript" src="js/upload.js"></script>
+<link rel="stylesheet" href="css/coachcss.css" type="text/css">
+<style type="text/css">
+ 
+  #coachcount,#usercount{
+  float:left;
+  width: 230px;
+  height: 50px;
+  border: 1px solid #eeeeee;
+  line-height: 50px;
+  text-align: center;
+  margin-left: 130px;
+  margin-top: 10px;
+  }
+  #usercount{
+  clear: left;
+  }
+  #shop tr{
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid WhiteSmoke    ;
+  }
+  
+  #shop td{
+  width: 250px;
+  border: 0.5px solid #eeeeee    ;
+ 
+  text-align: center;
+  }
+  .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
+  #zhezhao{
+	display: none; 
+	background-color: #000;
+	opacity: 0.7;
+	z-index: 4;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	}
+	#xiugairo{
+	display: none; 
+	background-color: WhiteSmoke;
+	z-index: 5;
+	position: fixed;
+	top: 0%;
+	left: 0%;
+	width:100%;
+	height: 1000px;
+	margin: auto;
+	line-height: 10px;
+	overflow: hidden;
+	}
+	#shop input{
+	width: 100%;
+	height: 100%;
+	border: 0px;
+	font-size: 16px;
+	}
+</style>
+</head>
+
+<script type="text/javascript">
+$(function () {	 
+	$.ajax({
+	async : false,
+	url : "http://172.20.10.11:8088/JiaLe/saxselectshopjl",
+	type : "post",
+	datatype:"jsonp",
+	jsonp:"callback",
+	contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+	success : function(data) {
+		var obj=JSON.parse(data);	
+		$("#coachcount").find("span").html(obj.length);
+		
+	}
+	});
+	$.ajax({
+		async : false,
+		url : "http://172.20.10.11:8088/JiaLe/saxselectshopyh",
+		type : "post",
+		datatype:"jsonp",
+		jsonp:"callback",
+		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+		success : function(data) {
+			var obj=JSON.parse(data);	
+			$("#usercount").find("span").html(obj.length);
+			
+			
+		}
+	});
+	$.ajax({
+		async : false,
+		url : "http://172.20.10.11:8088/JiaLe/saxselectshop",
+		type : "post",
+		datatype:"jsonp",
+		jsonp:"callback",
+		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+		success : function(data) {
+			var obj=JSON.parse(data);	
+			$($("#img1")[0]).attr("src",obj[0].shoppicture);
+			$("#shopid1").val(obj[0].shopid);
+			$($("#shop tr").find("td :text")[0]).val(obj[0].shopname);
+			$($("#shop tr").find("td :text")[1]).val(obj[0].shopspace); 
+			$($("#shop tr").find("td :text")[2]).val(obj[0].telephone);
+			$($("#shop tr").find("td :text")[3]).val(obj[0].shophours);
+			$($("#shop tr").find("td :text")[4]).val(obj[0].shoparea);
+			$($("#shop tr").find("td :text")[5]).val(obj[0].template);
+			$("#shopid2").val(obj[0].shopid); 
+			$("#shopid3").val(obj[0].shopid); 
+		}
+	});
+	function jiazai() {
+		 var selectuser;
+		 $.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/saxselectuser",
+				type : "post",
+				datatype:"jsonp",
+				jsonp:"callback",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					selectuser=JSON.parse(data);										
+				}
+			});
+		 
+		var Main = {
+				
+				 methods: {
+				      handleClick(row) {
+				    	  $("#zhezhao").show();
+					    	$("#xiugairo").show();
+				    	  this.form={
+					          userid: row.userid,
+					          username: row.username,
+					          sex: row.sex,
+					          phone: row.phone,
+					          weight:row.weight,
+					          height: row.height,
+					          sex: row.sex,
+					          birthday: row.birthday,
+					          regdate: row.regdate,
+					          remarks: row.remarks
+				        }
+				        
+				      },
+				      onSubmit(form) {
+				    	  $.ajax({
+								async : false,
+								url : "http://172.20.10.11:8088/JiaLe/saxupdatemyinfo",
+								data:{'userid':form.userid,'username':form.username,'sex':form.sex,
+									'phone':form.phone,'weight':form.weight,'height':form.height,
+									'sex':form.sex,'birthday':form.birthday,'regdate':form.regdate,
+									'remarks':form.remarks},
+								type : "post",
+								datatype:"jsonp",
+								jsonp:"callback",
+								contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+								success : function(data) {
+									selectuser=JSON.parse(data);										
+								},
+								error: function(data) {
+								}
+							});
+				    	  $("#zhezhao").hide();
+					      $("#xiugairo").hide();
+					      
+					   }
+				    },
+				      data()  {
+				    	return {	    	
+					    	  tableData5: selectuser,
+					    	  form: {
+						          userid: '',
+						          username: '',
+						          sex: '',
+						          phone: '',
+						          weight:'',
+						          height: '',
+						          sex: '',
+						          phone: '',
+						          birthday: '',
+						          regdate: '',
+						          remarks: ''
+						        }
+					      }
+			      }
+			  };
+			var Ctor = Vue.extend(Main);
+			new Ctor().$mount('#app');	
+	}
+	jiazai();
+	
+	$("#fanhui").click(function () {
+		 $("#zhezhao").hide();
+	    	$("#xiugairo").hide();
+	})
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/lbselectpic?shopid="+$("#shopid1").val(),
+		type:"post",
+		async:false,
+		datatype:"jsonp",
+		jsonp:"callback",
+		cintebtType:"application/x-www-form-urlencoded;charset=UTF-8",
+		success:function(data){
+			var jw = JSON.parse(data);
+			for(var i =0;i<jw.length;i++){
+				$($("#form3").find("img")[i]).attr("src",jw[i].picture);
+				
+			}
+		},error:function(data){//错误，返回回来的错误数据
+			alert("失败");
+		}
+	})
+	$("#shopinfo").click(function () {
+		 $.ajax({
+				async : false,
+				url : "http://172.20.10.11:8088/JiaLe/saxupdateshopinfo",
+				type : "post",
+				data : $("#form").serialize(),
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				success : function(data) {
+					selectuser=JSON.parse(data);										
+				},
+				 error: function (XMLHttpRequest, textStatus, errorThrown) {
+		              
+		                alert(XMLHttpRequest.status);
+		                alert(XMLHttpRequest.readyState);
+	                alert(textStatus);
+		        }
+			});
+	}) 
+});
+	
+	
+	
+	</script>
+	
+<body>
+
+<form  method="post" id="form" >
+<table id="shop" cellspacing="0px" style="float: left;margin-left: 50px;border: 1px solid #eeeeee;">
+<caption style="height: 50px;line-height: 50px;border: 1px solid #eeeeee; border-bottom: 0px;">店铺信息</caption>
+<tr>
+<td>店铺名称</td>
+<td><input type="text" name="shopname"></td>
+</tr>
+<tr>
+<td>店铺位置</td>
+<td><input type="text" name="shopspace"></td>
+</tr>
+<tr>
+<td>电话</td>
+<td><input type="text" name="telephone"></td>
+</tr>
+<tr>
+<td>营业时间</td>
+<td><input type="text" name="shophours"></td>
+</tr>
+<tr>
+<td>面积</td>
+<td><input type="text" name="shoparea"></td>
+</tr>
+<tr>
+<td>使用模板</td>
+<td><input type="text" name="template">
+<input type="hidden" name="shopid" id="shopid2"></td>
+</tr>
+<tr>
+
+<td><input type="submit" value="提交" id="shopinfo"></td>
+<td><input type="reset" value="重置"></td>
+</tr>
+</table>
+</form>
+
+<div style="float:left;width: 670px;text-align: center;">
+<div id="coachcount" style="margin-left:50px;margin-top:25px;">教练个数:<span></span></div>
+<div id="usercount" style="margin-left:50px;margin-top:25px;">本店用户个数:<span></span></div>
+
+<form  style="margin-left:50px" id="form1" method="post" action="updateshopinfo" enctype="multipart/form-data" >
+<table style="width:180px;height:150px;border:1px solid;margin-left:50px">
+<caption style="height:20px;line-height:20px;border: 1px solid #eeeeee; border-bottom: 0px;">店铺图片</caption>
+<tr>
+<td colspan="2" style="width:120px;height:120px;">
+<img id="img1" alt="店铺头像" src="" style="width:90px;height:90px;">
+</td>
+</tr>
+<tr>
+<td>
+<input  type="file" style="width: 55px;height: 22px;overflow: hidden;" name="img" id="xdaTanFileImg" onchange="xmTanUploadImg(this,1)" accept="image/*"/>
+<input type="hidden" name="shopid" id="shopid1">
+<input type="submit" value="提交"></td>
+</tr>
+</table>
+</form>
+
+<div style="clear: left;">
+<form  id="form3" action="lunbotu"  method="post" enctype="multipart/form-data" style="border: 0px solid red;">
+			<p style="width:500px;height:25px;font-size:20px;">轮播图加载</p>
+			<input type="hidden" name="shopid" id="shopid3">
+		<div style="width:150px;height: 165px;float: left;">
+			<img id="img2" src=""  alt="上传轮播图！" width="140px" height="140px"/>
+			<input type="file" name="img" id="xdaTanFileImg2" onchange="xmTanUploadImg(this,2)" accept="image/*"/>						
+		</div>
+		<div style="width: 150px;height: 165px;float: left;">
+			<img id="img3" src=""  alt="上传轮播图！" width="140px" height="140px"/>
+			<input type="file" name="img" id="xdaTanFileImg2" onchange="xmTanUploadImg(this,3)" accept="image/*"/>						
+		</div> 
+		<div style="width: 150px;height: 165px;float: left;">
+			<img id="img4" src=""  alt="上传轮播图！" width="140px" height="140px"/>
+			<input type="file" name="img" id="xdaTanFileImg3" onchange="xmTanUploadImg(this,4)" accept="image/*"/>						
+		</div>
+		<!-- <div style="width: 150px;height: 165px;float: left;">
+			<img id="img5" src=""  alt="上传轮播图！" width="140px" height="140px"/>
+			<input type="file" name="img" id="xdaTanFileImg4" onchange="xmTanUploadImg(this,5)" accept="image/*"/>											
+		</div>--> 
+		<input type="submit" value="上传">        			  
+	 </form> 
+</div>
+</div>
+
+<div id="app" style="clear: left;">		
+<template>
+  <el-table
+    :data="tableData5"
+    style="width: 100%"
+    >
+    <el-table-column type="expand">
+      <template slot-scope="props">
+        <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="用户id">
+            <span>{{ props.row.userid }}</span>
+          </el-form-item>
+          <el-form-item label="姓名">
+            <span>{{ props.row.username }}</span>
+          </el-form-item>
+          <el-form-item label="性别">
+            <span>{{ props.row.sex }}</span>
+          </el-form-item>
+          <el-form-item label="电话">
+            <span>{{ props.row.phone }}</span>
+          </el-form-item>
+          <el-form-item label="体重">
+            <span>{{ props.row.weight }}</span>
+          </el-form-item>
+          <el-form-item label="身高">
+            <span>{{ props.row.height }}</span>
+          </el-form-item>
+          <el-form-item label="生日">
+            <span>{{ props.row.birthday }}</span>
+          </el-form-item>
+           <el-form-item label="注册时间">
+            <span>{{ props.row.regdate }}</span>
+          </el-form-item>
+           <el-form-item label="简介">
+            <span>{{ props.row.remarks }}</span>
+          </el-form-item>         
+        </el-form>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="用户id"
+      prop="userid">
+    </el-table-column>
+    <el-table-column
+      label="姓名"
+      prop="username">
+    </el-table-column>
+    <el-table-column
+      label="注册时间"
+      prop="regdate">
+    </el-table-column>
+    <el-table-column fixed="right" label="操作" width="100">
+      <template slot-scope="scope">
+        <el-button @click="handleClick(scope.row)" type="text" size="20px">修改</el-button>
+      </template>
+	</el-table-column>
+  </el-table>
+</template>
+
+
+
+<div id="zhezhao"></div>
+<div id="xiugairo" >
+<el-form ref="form" :model="form" label-width="80px" size="small" id="fff">
+  <el-form-item label="用户id">
+    <el-input v-model="form.userid" disabled="false"></el-input>
+  </el-form-item>
+  <el-form-item label="姓名">
+    <el-input v-model="form.username"></el-input>
+  </el-form-item>
+  <el-form-item label="性别">
+    <el-radio-group v-model="form.sex">
+      <el-radio label="男"></el-radio>
+      <el-radio label="女"></el-radio>
+    </el-radio-group>
+  </el-form-item>
+  <el-form-item label="电话">
+    <el-input v-model="form.phone"></el-input>
+  </el-form-item>
+  <el-form-item label="体重">
+    <el-input v-model="form.weight"></el-input>
+  </el-form-item>
+  <el-form-item label="身高">
+    <el-input v-model="form.height"></el-input>
+  </el-form-item>
+  <el-form-item label="生日">
+    <el-col :span="11">
+      <el-date-picker type="date" placeholder="选择日期" v-model="form.birthday" style="width: 100%;"></el-date-picker>
+    </el-col>
+  </el-form-item>
+  <el-form-item label="注册时间">
+    <el-col :span="11">
+      <el-date-picker disabled="false" type="date" placeholder="选择日期" v-model="form.regdate" style="width: 100%;"></el-date-picker>
+    </el-col>
+  </el-form-item>
+  <el-form-item label="简介">
+    <el-input type="textarea" v-model="form.remarks"></el-input>
+  </el-form-item>
+
+  <el-form-item>
+    <el-button type="primary" @click="onSubmit(form)">立即修改</el-button>
+    <el-button>取消</el-button>
+  </el-form-item>
+</el-form>
+</div>
+</div>
+
+
+
+
+</body>
+</html>

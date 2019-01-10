@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>分店</title>
+
+	<script type="text/javascript" src="js/vue.min.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+<link rel="stylesheet" type="text/css" href="http://unpkg.com/element-ui@2.4.8/lib/theme-chalk/index.css">
+<link rel="stylesheet" type="text/css" href="css/branchone.css"/>
+
+<!-- 地图 -->
+<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=mK55PnxMQ79ff5TAzWNdvQufGSTiy5n1&services=&t=20171014112628">
+</script>
+<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+
+</head>
+
+	 <!-- ajax进入分店1图片的查询-->
+<script type="text/javascript">
+$(function(){
+	function getUrlParam(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+		var r = window.location.search.substr(1).match(reg); //匹配目标参数
+		if (r != null)
+		return unescape(r[2]);
+		return null; //返回参数值
+		}
+	
+	//查询店下图片
+	//alert(getUrlParam("shopid"));
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/wxyselectpic?shopid="+getUrlParam("shopid"),
+		type:"post",
+		async:false,
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+			var obj=JSON.parse(data);
+			if(obj!=""){
+			
+				for(let i=0;i<obj.length;i++){
+					$("#img"+i+"").attr("src",obj[i].picture);
+				}
+			}
+			
+		}
+		
+	})	
+	
+	//店铺下的教练的查询
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/wxyselectshop?shopid="+getUrlParam('shopid'),
+		type:"post",
+		async:false,
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+			var obj=JSON.parse(data);
+			if(obj!=""){
+				for(let i=0;i<obj.length;i++){
+					$("#cj"+i+"").append("<a href='coach1.html?userid="+obj[i].userid+"'><img class='img_2' id='jiao"+i+"' src="+obj[i].userpicture+" ></a>")
+				}
+			}
+		}
+	})	
+	
+	//店铺经营时间等的查询
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/lbselectshopinfo?shopid="+getUrlParam('shopid'),
+		type:"post",
+		async:false,
+		datatype:"jsonp",
+		jsonp:"callback",
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+			var obj=JSON.parse(data);
+			if(obj!=""){
+				for(let i=0;i<obj.length;i++){
+					$("#shophours").html(obj[i].shophours);
+					$("#telephone").html(obj[i].telephone);
+					$("#shopspace").html(obj[i].shopspace);
+				}
+			}
+		},
+		 error: function (XMLHttpRequest, textStatus, errorThrown) {
+     }
+		
+	})	
+	
+	})
+
+
+</script>
+
+<script type="text/javascript">
+$(function(){
+	
+	//器材的查询
+	$.ajax({
+		url:"http://172.20.10.11:8088/JiaLe/selectequipment",
+		type:"post",
+		async:false,
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		success:function(data){
+			var obj=JSON.parse(data);
+			if(obj!=""){
+				for(let i=0;i<obj.length;i++){
+					$("#q"+i+"").attr("src",obj[i].equipmentpicture);
+					
+					$("#li"+(i+1)+"").mouseover(function(){		
+						$("#one").html("<body><div id=\"zhezhao\"><div class=\"count\"><p class=\"zi\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+obj[i].equipmentcontent+"</p></div></div></body>");		
+					});
+					
+					$("#li"+(i+1)+"").mouseout(function(){		
+						$("#one").html("<body></body>");	
+					});
+				};
+			}
+		}
+	})	
+})
+
+</script>
+
+<!-- 页面信息 -->
+<body style="width:1520px;height: 2800px; ">
+<!-- 导航 -->
+
+<iframe src="dingtou.jsp" style="display:block;width:1520px;z-index:5000;position:fixed;top:0;height: 185px;border: 0px">
+</iframe>
+	<img  id="img0" src="" />
+
+	<!-- 门店信息展示 轮播 -->
+
+	<div id="app" style="margin-left: 10%; margin-right: 10%;">
+		<h3 class="h3">门店风采</h3>
+		<template> <el-carousel :interval="4000" type="card"
+			height="300px"> <el-carousel-item v-for="item in 1"
+			:key="item"> <img class="img_lb"
+			id="img1"	src="" /> </el-carousel-item> <el-carousel-item v-for="item in 1"
+			:key="item"> <img class="img_lb" 
+			id="img2" src="" /> </el-carousel-item> <el-carousel-item v-for="item in 1"
+			:key="item"> <img class="img_lb"
+			id="img3" src="" /> </el-carousel-item> </el-carousel> </template>
+	</div>
+
+	<script type="text/javascript">
+		new Vue().$mount('#app')
+	</script>
+
+	<!-- 门店信息 联系 -->
+	<div id="cen">
+
+		<div id="cen_0">
+
+			<div id="cen_0_1"
+				style="float: left; width: 100%; height: 35%;  ">
+				<h1 style="color: #5d5f6c; font-size: 30px;">嘉乐健身俱乐部</h1>
+			</div>
+			<!-- 图标1 -->
+			<div id="cen_0_2" style="float: left; width: 100%; height: 20%; margin-top: -5%;">
+				<div style="float: left;">
+					<img src=""  id="img4"/>
+				</div>
+				<div style="float: left; margin-left: 2%;">
+					<span style="color: #00b0e5; font-size: 18px; font-weight: 900;">营业时间</span>
+					<p id="shophours" ></p>
+				</div>
+			</div>
+			<!-- 图标2 -->
+			<div id="cen_0_2" style="float: left; width: 100%; height: 20%;">
+				<div style="float: left;">
+					<img src="" id="img5" />
+				</div>
+				<div style="float: left; margin-left: 2%;">
+					<span style="color: #00b0e5; font-size: 18px; font-weight: 900;">电话</span>
+					<p id="telephone" ></p>
+				</div>
+			</div>
+			<!-- 图标3 -->
+			<div id="cen_0_2" style="float: left; width: 100%; height: 20%;">
+				<div style="float: left;">
+					<img src=""  id="img6"/>
+				</div>
+				<div style="float: left; margin-left: 2%;">
+					<span style="color: #00b0e5; font-size: 18px; font-weight: 900;">地址</span>
+					<p id="shopspace" ></p>
+				</div>
+			</div>
+
+		</div>
+		<!-- 地图显示 -->
+		<div id="cen_ditu">
+			<div id="allmap" style="width:100%;height:100%;border-radius:10px;"></div>
+		
+		</div>
+	</div>
+<!-- 
+
+<div class="dpxz">
+			<a href="index.jsp" style="margin-top:5px;font-size:30px;font-family:'华文楷体';">到达这里</a>
+			<div style="width:540px; height:430px;">
+				<div style="width:540px; height:100px;margin-top:5px;">
+					<div id="r-result">
+						<input type="text" id="startId" name="startId" size="20" placeholder="起始位置" /><br>
+						<input type="text" id="destinationId" name="destinationId" size="20" placeholder="目的地位置" /><br>
+						<input type="button" id="result" value="查询" />
+					</div>
+					<div id="resultstep" class="resultstep"></div>
+					<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto;display:none;"></div>
+				</div>
+				</br>
+				<div id="fade" class="black_overlay"></div>
+			</div>
+		</div> -->
+
+
+
+
+
+
+
+
+	<!-- 特色器材   img/qc1.jpg-->
+	<h3 class="h3" style="margin-left: 10%;">特色器材</h3>
+	<div id="cen_1">
+		<div id="left">
+			<ul>
+				<li id="li1" class="li"><img
+					class="img_0"  id="q0" src="" />跑步车</li>
+				
+				<li id="li2" class="li"><img
+					class="img_0" id="q1" src="" />动感单车</li>
+				
+
+			</ul>
+		</div>
+
+		<div id="zhong">
+			<img class="right" id="img7"  src="" />
+		</div>
+
+
+
+		<div id="right">
+			<ul>
+				<li id="li3" class="li"><img
+					class="img_0" id="q2" src="" />史密斯卧推</li>
+				
+				<li id="li4" class="li"><img
+					class="img_0"  id="q3" src="" />硅胶沙袋</li>
+				
+			</ul>
+		</div>
+
+		<div id="one"></div>
+		
+		
+
+	</div>
+<!--教练  img/jiao4.jpg -->
+	<div id="cen_2">
+		<h3>明显教练</h3>
+		<div class="cen_2_1" id="cj0"><!-- img8 -->
+		</div>
+		<div  class="cen_2_1" id="cj1">
+		</div>
+		<div class="cen_2_1" id="cj2">
+		</div>
+		
+		<div class="cen_2_1"  id="cj3">
+		</div>
+
+
+	</div>
+
+	<!-- 底部 -->
+
+	
+	
+<iframe src="dibu.html" style="display:block;width:100%; height: 17%; scrolling=no; ">
+</iframe>
+	
+
+</body>
+<script type="text/javascript" src="js/jquery-3.3.1.js">
+	$(function() {
+		$(this).bind(function() {
+		
+		})
+		
+	})
+</script>
+
+
+<!-- 地图 -->
+<script type="text/javascript">
+	//我所在位置119.98186101,31.77139674
+	// 百度地图API功能
+	var map = new BMap.Map("allmap"); // 创建Map实例
+	map.centerAndZoom(new BMap.Point(113.807778,34.800157), 17); // 初始化地图,设置中心点坐标和地图级别
+	map.addControl(new BMap.MapTypeControl()); //添加地图类型控件
+	map.setCurrentCity("郑州市"); // 设置地图显示的城市 此项是必须设置的
+	map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+
+	function G(id) {
+		return document.getElementById(id);
+	}
+
+	var ac = new BMap.Autocomplete( //建立一个自动完成的对象
+	{
+		"input" : "startId",
+		"location" : map
+	});
+
+	var bc = new BMap.Autocomplete( //建立一个自动完成的对象
+	{
+		"input" : "destinationId",
+		"location" : map
+	});
+
+	ac.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
+		var str = "";
+		var _value = e.fromitem.value;
+		var value = "";
+		if (e.fromitem.index > -1) {
+			value = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+		}
+		str = "FromItem<br />index = " + e.fromitem.index + "<br />value = "
+				+ value;
+
+		value = "";
+		if (e.toitem.index > -1) {
+			_value = e.toitem.value;
+			value = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+		}
+		str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = "
+				+ value;
+		G("searchResultPanel").innerHTML = str;
+	});
+
+	bc.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
+		var str = "";
+		var _value = e.fromitem.value;
+		var value = "";
+		if (e.fromitem.index > -1) {
+			value = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+		}
+		str = "FromItem<br />index = " + e.fromitem.index + "<br />value = "
+				+ value;
+
+		value = "";
+		if (e.toitem.index > -1) {
+			_value = e.toitem.value;
+			value = _value.province + _value.city + _value.district
+					+ _value.street + _value.business;
+		}
+		str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = "
+				+ value;
+		G("searchResultPanel").innerHTML = str;
+	});
+
+	var myValue;
+	ac.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+		var _value = e.item.value;
+		myValue = _value.province + _value.city + _value.district
+				+ _value.street + _value.business;
+		G("searchResultPanel").innerHTML = "onconfirm<br />index = "
+				+ e.item.index + "<br />myValue = " + myValue;
+
+		setPlace();
+	});
+
+	var myValue;
+	bc.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+		var _value = e.item.value;
+		myValue = _value.province + _value.city + _value.district
+				+ _value.street + _value.business;
+		G("searchResultPanel").innerHTML = "onconfirm<br />index = "
+				+ e.item.index + "<br />myValue = " + myValue;
+
+		setPlace();
+	});
+
+	function setPlace() {
+		map.clearOverlays(); //清除地图上所有覆盖物
+		function myFun() {
+			var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+			map.centerAndZoom(pp, 18);
+			map.addOverlay(new BMap.Marker(pp)); //添加标注
+		}
+		var local = new BMap.LocalSearch(map, { //智能搜索
+			onSearchComplete : myFun
+		});
+		local.search(myValue);
+	}
+
+	//三种驾车策略：最少时间，最短距离，避开高速
+	var routePolicy = [ BMAP_DRIVING_POLICY_LEAST_TIME,
+			BMAP_DRIVING_POLICY_LEAST_DISTANCE,
+			BMAP_DRIVING_POLICY_AVOID_HIGHWAYS ];
+	$("#result").click(function() {
+		$("#resultstep").css("display", "block");
+		var start = $("#startId").val();
+		var end = $("#destinationId").val();
+		//alert(start+"--"+end);
+		map.clearOverlays();
+		var i = $("#driving_way select").val();
+		search(start, end, routePolicy[i]);
+		function search(start, end, route) {
+			var driving = new BMap.DrivingRoute(map, {renderOptions: {map: map, panel: "resultstep", autoViewport: true}});
+			driving.search(start,end);
+		}
+
+		//驾车计算时间和距离
+		var output = "从" + start + "到" + end + "驾车需要";
+		var searchComplete = function(results) {
+			if (transit.getStatus() != BMAP_STATUS_SUCCESS) {
+				return;
+			}
+			var plan = results.getPlan(0);
+			output += plan.getDuration(true) + "\n"; //获取时间
+			output += "总路程为：";
+			output += plan.getDistance(true) + "\n"; //获取距离
+		}
+		var transit = new BMap.DrivingRoute(map, {
+			renderOptions : {
+				map : map
+			},
+			onSearchComplete : searchComplete,
+			onPolylinesSet : function() {
+				setTimeout(function() {
+
+				}, "1000");
+				//$("#resultCount").html(output);
+			}
+		});
+		transit.search(start, end);
+
+		//驾车步骤
+		var transit = new BMap.DrivingRoute(map, {
+			renderOptions : {
+				map : map,
+				panel : "",
+				enableDragging : true
+			//起终点可进行拖拽
+			},
+		});
+		transit.search(start, end);
+	});
+
+	//比例尺控件
+	var top_left_control = new BMap.ScaleControl({
+		anchor : BMAP_ANCHOR_TOP_LEFT
+	});// 左上角，添加比例尺
+	var top_left_navigation = new BMap.NavigationControl(); //左上角，添加默认缩放平移控件
+	var top_right_navigation = new BMap.NavigationControl({
+		anchor : BMAP_ANCHOR_TOP_RIGHT,
+		type : BMAP_NAVIGATION_CONTROL_SMALL
+	}); //右上角，仅包含平移和缩放按钮
+	/*缩放控件type有四种类型:
+	BMAP_NAVIGATION_CONTROL_SMALL：仅包含平移和缩放按钮；BMAP_NAVIGATION_CONTROL_PAN:仅包含平移按钮；BMAP_NAVIGATION_CONTROL_ZOOM：仅包含缩放按钮*/
+	//默认加载地图add比例尺控件
+	map.addControl(top_left_control);
+	map.addControl(top_left_navigation);
+	map.addControl(top_right_navigation);
+</script>
+
+
+</html>

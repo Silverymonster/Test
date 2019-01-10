@@ -1,0 +1,100 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+.body{
+	height:740px;
+	width:1520px;
+}
+.wai{
+	height:550px;
+	width:600px;
+	margin-top:160px;
+	margin-left:450px;
+	text-align:center;
+}
+.li1{
+	height:55px;
+	width:600px;
+	border-radius:20px;
+}
+.li2{
+	height:400px;
+	width:600px;
+	border-radius:20px;
+}
+.dl{
+	height:400px;
+	width:600px;
+	margin-top:-24px;
+	display:block;
+	opacity:0.7;
+	border-radius:5px 5px 20px 20px;
+	background-color:black;
+}
+.dl1{
+	height:350px;
+	width:500px;
+	margin-top:25px;
+	margin-left:50px;
+}
+.zc{
+	height:470px;
+	width:600px;
+	display:none;
+	margin-top:1px;
+	border-radius:5px 5px 20px 20px;
+	background-color:black;
+	opacity:0.7;
+}
+.zc1{
+	height:450px;
+	width:520px;
+	margin-left:30px;
+}
+img{
+	width:60px;
+	height:60px;
+	border-radius:20px;
+}
+input[type="text"]{
+	width:230px;
+    height:30px;
+    border:0px;
+    border-radius:20px;
+}
+input[type="password"]{
+	width:230px;
+    height:30px;
+    margin-left:15px;
+    border:0px;
+    border-radius:20px;
+}
+input[type="submit"],[type="reset"]{
+	width:130px;
+    height:40px;
+    margin-left:25px;
+    border:0px;
+    background-color:CornflowerBlue;
+    border-radius:20px;
+}
+input[type="radio"]{
+	width:30px;
+    height:20px;
+    border:0px;
+	margin-left:50px;
+	background-color:CornflowerBlue;
+}
+.but1{
+	width:130px;
+    height:40px;
+    margin-left:25px;
+    border:0px;
+    background-color:CornflowerBlue;
+    border-radius:20px;
+}
+td{
+	font-family:'»ªÎÄ¿¬Ìå';
+	font-size:20px;
+	color:white;
+}
